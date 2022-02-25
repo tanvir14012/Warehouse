@@ -1,0 +1,163 @@
+<div class="order-detail" [ngClass]="{'edit-mode': editMode}">
+
+    <!-- Actions -->
+    <div class="actions">
+
+        <!-- Edit button -->
+        <button mat-icon-button *ngIf="!editMode" [matMenuTriggerFor]="actionsMenu">
+            <mat-icon [svgIcon]="'more_vert'"></mat-icon>
+        </button>
+        <mat-menu #actionsMenu="matMenu">
+            <button mat-menu-item *ngIf="!editMode" (click)="enableEditMode()">
+                <mat-icon [svgIcon]="'edit'"></mat-icon>
+                <span>Edit order</span>
+            </button>
+        </mat-menu>
+
+        <!-- Cancel button -->
+        <button class="cancel-button" mat-icon-button *ngIf="editMode" [matTooltip]="'Cancel'"
+            (click)="editMode = !editMode">
+            <mat-icon [svgIcon]="'cancel'"></mat-icon>
+        </button>
+
+        <!-- Save button -->
+        <button mat-icon-button *ngIf="editMode" [matTooltip]="'Save'">
+            <mat-icon [svgIcon]="'save'"></mat-icon>
+        </button>
+
+        <!-- Delete button
+        <button mat-icon-button *ngIf="editMode" [matTooltip]="'Delete'" (click)="trackByFn(1, 2)">
+            <mat-icon [svgIcon]="'delete'"></mat-icon>
+        </button> -->
+
+        <!-- Close button -->
+        <button mat-icon-button *ngIf="!editMode" [matTooltip]="'Close'" (click)="onClose()">
+            <mat-icon [svgIcon]="'close'"></mat-icon>
+        </button>
+
+    </div>
+    <form novalidate="" class="ng-untouched ng-pristine ng-valid">
+
+        <div class="avatar-and-name">
+
+            <div class="view ng-star-inserted">
+                <div class="name">{{order?.customer}}</div>
+            </div>
+
+
+        </div>
+        <div class="tags ng-star-inserted">
+            <div class="tag ng-star-inserted"><span class="tag-title">Order No{{order?.orderNo}}</span></div>
+        </div>
+        
+
+        <div class="order ng-untouched ng-pristine ng-valid ng-star-inserted">
+            <mat-icon [svgIcon]="'feather:activity'"></mat-icon>
+            <div class="view ng-star-inserted">
+                <div class="title ng-star-inserted"> 
+                    <span *ngIf="order?.status"
+                class="inline-flex items-center green-200 font-bold text-xs px-2 py-2px rounded-full tracking-wide">
+                Fulfilled
+            </span>
+            <span *ngIf="!order?.status"
+                class="inline-flex items-center red-200 font-bold text-xs px-2 py-2px rounded-full tracking-wide">
+                Unfulfilled
+            </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <div class="order ng-untouched ng-pristine ng-valid ng-star-inserted">
+            <mat-icon [svgIcon]="'calendar_today'"></mat-icon>
+            <div class="view ng-star-inserted">
+                <div class="title ng-star-inserted"> {{order?.creationDate | date : 'MM/dd/yy h:mm a'}}
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <div class="order ng-untouched ng-pristine ng-valid ng-star-inserted">
+            <mat-icon [svgIcon]="'email'"></mat-icon>
+
+            <div class="view ng-star-inserted">
+                <div class="title ng-star-inserted"> <a class="link" href="mailto:{{order?.email}}"> {{order?.email}} </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <div class="order ng-untouched ng-pristine ng-valid ng-star-inserted">
+            <mat-icon [svgIcon]="'feather:lock'"></mat-icon>
+            
+            <div class="view ng-star-inserted">
+                <div class="title ng-star-inserted"> {{order?.userLock ? 'Yes': 'No'}}
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <div class="order ng-untouched ng-pristine ng-valid ng-star-inserted">
+            <mat-icon [svgIcon]="'location_on'"></mat-icon>
+            <div class="view ng-star-inserted">
+                <div class="title ng-star-inserted">{{order?.wareHouse}}
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <div class="order ng-untouched ng-pristine ng-valid ng-star-inserted">
+            <mat-icon [svgIcon]="'local_shipping'"></mat-icon>
+            <div class="view ng-star-inserted">
+                <div class="title ng-star-inserted"> 
+                    <span *ngIf="order?.readyToShip">
+                         Yes
+                    </span>
+                    <span *ngIf="!order?.readyToShip">
+                       NO
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <div class="order ng-untouched ng-pristine ng-valid ng-star-inserted">
+            <mat-icon [svgIcon]="'calendar_view_day'"></mat-icon>
+            <div class="view ng-star-inserted">
+                <div class="title ng-star-inserted"> {{order?.requiredShipDate}}
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+         
+
+    </form>
+</div>

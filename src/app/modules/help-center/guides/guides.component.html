@@ -1,0 +1,48 @@
+<div class="content-layout fullwidth-basic-normal-scroll">
+
+    <!-- Header -->
+    <div class="header">
+
+        <a mat-button
+           [routerLink]="['../../../']"
+           [color]="'primary'">
+            <mat-icon [svgIcon]="'arrow_back'"></mat-icon>
+            <span>Back to Help Center</span>
+        </a>
+        <h1>Guides & Resources</h1>
+
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <div class="guides">
+
+            <div class="category"
+                 *ngFor="let guideCategory of guideCategories; trackBy: trackByFn">
+
+                <a class="title"
+                   [routerLink]="[guideCategory.slug]">
+                    <h3>{{guideCategory.title}}</h3>
+                </a>
+
+                <a class="link guide"
+                   *ngFor="let guide of guideCategory.guides; trackBy: trackByFn"
+                   [routerLink]="[guideCategory.slug, guide.slug]">
+                    {{guide.title}}
+                </a>
+
+                <a class="view-all"
+                   *ngIf="guideCategory.totalGuides > guideCategory.visibleGuides"
+                   [routerLink]="guideCategory.slug">
+                    <span>View All</span>
+                    <mat-icon [svgIcon]="'arrow_forward'"></mat-icon>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

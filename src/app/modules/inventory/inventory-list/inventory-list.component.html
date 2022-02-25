@@ -1,0 +1,461 @@
+<div class="content-layout fullwidth-standard-inner-scroll">
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- Header -->
+        <div class="header">
+
+            <!-- Title -->
+            <div class="title">
+                <h1>Inventory</h1>
+            </div>
+
+            <!-- Main actions -->
+            <div class="main-actions">
+
+                <!-- Search -->
+                <div class="search">
+
+                    <mat-form-field class="treo-mat-dense treo-mat-no-subscript">
+                        <mat-icon matPrefix
+                                  [svgIcon]="'search'"></mat-icon>
+                        <input matInput
+                               [formControl]="searchInputControl"
+                               [autocomplete]="'off'"
+                               [placeholder]="'Search products'">
+                    </mat-form-field>
+
+                </div>
+
+                <!-- Add product button -->
+                <button class="add-product"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="createProduct()">
+                    <mat-icon [svgIcon]="'add'"></mat-icon>
+                    Add
+                </button>
+
+            </div>
+
+            <div class="loader"
+                 *ngIf="isLoading">
+                <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+            </div>
+
+        </div>
+
+        <!-- Products list -->
+        <div class="products-list">
+
+            <ng-container *ngIf="productsCount > 0 || isLoading; else noProducts">
+
+                <div class="table-wrapper">
+
+                    <!-- Table -->
+                    <table [ngClass]="{loading: isLoading}"
+                           mat-table
+                           matSort
+                           [matSortActive]="'created_at'"
+                           [matSortDisableClear]="true"
+                           [matSortDirection]="'desc'"
+                           [multiTemplateDataRows]="true"
+                           [dataSource]="products"
+                           [trackBy]="trackByFn">
+
+                        <!-- SKU -->
+                        <ng-container matColumnDef="sku">
+                            <th mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                disableClear>
+                                SKU
+                            </th>
+                            <td mat-cell
+                                *matCellDef="let product">
+                                <div class="sku-content">
+                                    <span class="thumbnail">
+                                        <img *ngIf="product.thumbnail"
+                                             [src]="product.thumbnail">
+                                        <span *ngIf="!product.thumbnail">
+                                            No Image
+                                        </span>
+                                    </span>
+                                    <span class="sku">{{product.sku}}</span>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Name -->
+                        <ng-container matColumnDef="description">
+                            <th mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef>
+                                Name
+                            </th>
+                            <td mat-cell
+                                *matCellDef="let product">
+                                {{product.description}}
+                            </td>
+                        </ng-container>
+
+                        <!-- Price -->
+                        <ng-container matColumnDef="unit_price">
+                            <th mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                                disableClear>
+                                Price
+                            </th>
+                            <td mat-cell
+                                *matCellDef="let product">
+                                kr {{product.unit_price}}
+                            </td>
+                        </ng-container>
+
+                        <!-- Stock -->
+                        <ng-container matColumnDef="on_hand">
+                            <th mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                                disableClear>
+                                Stock
+                            </th>
+                            <td mat-cell
+                                *matCellDef="let product">
+                                <span class="flex items-center">
+                                    <span class="min-w-4">{{product.on_hand}}</span>
+                                    <!-- Low stock -->
+                                    <span class="flex items-end ml-2 w-1 h-4 bg-red-200 rounded overflow-hidden"
+                                          *ngIf="product.on_hand <= 25">
+                                        <span class="flex w-full h-1/3 bg-red-600"></span>
+                                    </span>
+                                    <!-- High stock -->
+                                    <span class="flex items-end ml-2 w-1 h-4 bg-green-100 rounded overflow-hidden"
+                                          *ngIf="product.on_hand > 25">
+                                        <span class="flex w-full h-full bg-green-400"></span>
+                                    </span>
+                                </span>
+
+                            </td>
+                        </ng-container>
+
+                        <!-- Active -->
+                        <ng-container matColumnDef="active">
+                            <th mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef>
+                                Active
+                            </th>
+                            <td mat-cell
+                                *matCellDef="let product">
+                                <mat-icon class="text-green-400 icon-size-20"
+                                          *ngIf="product.active"
+                                          [svgIcon]="'check'"></mat-icon>
+                                <mat-icon class="text-cool-gray-400 icon-size-20"
+                                          *ngIf="!product.active"
+                                          [svgIcon]="'close'"></mat-icon>
+                            </td>
+                        </ng-container>
+                        <!-- Details -->
+                        <ng-container matColumnDef="details">
+                            <th mat-header-cell
+                                *matHeaderCellDef>
+                                Details
+                            </th>
+                            <td mat-cell
+                                *matCellDef="let product">
+                                <button mat-stroked-button
+                                        (click)="toggleDetails(product)">
+                                    <mat-icon [svgIcon]="selectedProduct?.id === product.id ? 'expand_less' : 'expand_more'"></mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <!-- Product details row -->
+                        <ng-container matColumnDef="productDetails">
+                            <td mat-cell
+                                *matCellDef="let product"
+                                [attr.colspan]="productsTableColumns.length">
+                                <div class="product-details-container"
+                                     [@expandCollapse]="selectedProduct?.id === product.id ? 'expanded' : 'collapsed'">
+                                    <div class="product-details">
+
+                                        <!-- Selected Product Form -- Built with Tailwind utility classes -->
+                                        <form class="flex flex-col w-full"
+                                              [formGroup]="selectedProductForm">
+
+                                            <div class="flex p-8">
+
+                                                <div class="flex flex-col">
+                                                    <div class="flex flex-col items-center">
+                                                        <div class="p-3 border rounded">
+                                                            <ng-container *ngIf="selectedProductForm.get('images').value && selectedProductForm.get('images').value.length; else noImage">
+                                                                <img class="w-30 min-w-30"
+                                                                     [src]="selectedProductForm.get('images').value[selectedProductForm.get('currentImageIndex').value]">
+                                                            </ng-container>
+                                                            <ng-template #noImage>
+                                                                <span class="flex items-center min-h-20 text-lg font-semibold">NO IMAGE</span>
+                                                            </ng-template>
+                                                        </div>
+                                                        <div class="flex items-center mt-2"
+                                                             *ngIf="selectedProductForm.get('images').value && selectedProductForm.get('images').value.length">
+                                                            <button mat-icon-button
+                                                                    (click)="cycleImages(false)">
+                                                                <mat-icon class="icon-size-16"
+                                                                          [svgIcon]="'arrow_back'"></mat-icon>
+                                                            </button>
+                                                            <span class="font-sm mx-2">
+                                                                {{selectedProductForm.get('currentImageIndex').value + 1}} of {{selectedProductForm.get('images').value.length}}
+                                                            </span>
+                                                            <button mat-icon-button
+                                                                    (click)="cycleImages(true)">
+                                                                <mat-icon class="icon-size-16"
+                                                                          [svgIcon]="'arrow_forward'"></mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex flex-col mt-8">
+                                                        <span class="font-semibold mb-2">Product status</span>
+                                                        <mat-slide-toggle [formControlName]="'active'"
+                                                                          color="primary">
+                                                            {{selectedProductForm.get('active').value === true ? 'Active' : 'Disabled'}}
+                                                        </mat-slide-toggle>
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex flex-auto">
+
+                                                    <div class="flex flex-col w-2/4 pl-8">
+                                                        <mat-form-field class="w-full">
+                                                            <mat-label>Name</mat-label>
+                                                            <input matInput
+                                                                   [formControlName]="'description'">
+                                                        </mat-form-field>
+                                                        <div class="flex">
+                                                            <mat-form-field class="w-1/3 pr-2">
+                                                                <mat-label>SKU</mat-label>
+                                                                <input matInput
+                                                                       [formControlName]="'sku'">
+                                                            </mat-form-field>
+                                                            <mat-form-field class="w-2/3 pl-2" formGroupName="additional_attributes">
+                                                                <mat-label>Barcode</mat-label>
+                                                                <input matInput
+                                                                       [formControlName]="'ean13'">
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="flex">
+                                                            <mat-form-field class="w-1/3 pr-2">
+                                                                <mat-label>Category</mat-label>
+                                                                <mat-select [formControlName]="'category'">
+                                                                    <mat-option *ngFor="let category of categories"
+                                                                                [value]="category.id">
+                                                                        {{category.name}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                            <mat-form-field class="w-1/3 px-2">
+                                                                <mat-label>Brand</mat-label>
+                                                                <mat-select [formControlName]="'brand'">
+                                                                    <mat-option *ngFor="let brand of brands"
+                                                                                [value]="brand.id">
+                                                                        {{brand.name}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                            <mat-form-field class="w-1/3 pl-2">
+                                                                <mat-label>Vendor</mat-label>
+                                                                <mat-select [formControlName]="'vendor'">
+                                                                    <mat-option *ngFor="let vendor of vendors"
+                                                                                [value]="vendor.id">
+                                                                        {{vendor.name}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="flex">
+                                                            <mat-form-field class="w-1/3 pr-2">
+                                                                <mat-label>Stock</mat-label>
+                                                                <input type="number"
+                                                                       matInput
+                                                                       [formControlName]="'on_hand'">
+                                                            </mat-form-field>
+                                                            <mat-form-field class="w-1/3 pl-2">
+                                                                <mat-label>Reserved</mat-label>
+                                                                <input type="number"
+                                                                       matInput
+                                                                       [formControlName]="'alocated'">
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex flex-col w-1/4 pl-8">
+                                                        <mat-form-field class="w-full">
+                                                            <mat-label>Cost</mat-label>
+                                                            <span matPrefix>kr</span>
+                                                            <input matInput
+                                                                   [formControlName]="'cost'">
+                                                        </mat-form-field>
+                                                        <mat-form-field class="w-full">
+                                                            <mat-label>Base Price</mat-label>
+                                                            <span matPrefix>kr</span>
+                                                            <input matInput
+                                                                   [formControlName]="'basePrice'">
+                                                        </mat-form-field>
+                                                        <mat-form-field class="w-full">
+                                                            <mat-label>Tax</mat-label>
+                                                            <span matSuffix>%</span>
+                                                            <input type="number"
+                                                                   matInput
+                                                                   [formControlName]="'taxPercent'">
+                                                        </mat-form-field>
+                                                        <mat-form-field class="w-full">
+                                                            <mat-label>Price</mat-label>
+                                                            <span matSuffix>kr</span>
+                                                            <input matInput
+                                                                   [formControlName]="'unit_price'">
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                    <div class="flex flex-col w-1/4 pl-8">
+                                                        <mat-form-field class="w-full">
+                                                            <mat-label>Weight</mat-label>
+                                                            <span matSuffix>g</span>
+                                                            <input matInput
+                                                                   [formControlName]="'weight'">
+                                                        </mat-form-field>
+
+                                                        <ng-container *ngIf="selectedProduct && selectedProduct.tags">
+                                                            <span class="font-semibold">Tags</span>
+                                                            <div class="tags">
+                                                                <div class="tags-header">
+                                                                    <div class="new-tag">
+                                                                        <mat-icon [svgIcon]="'search'"></mat-icon>
+                                                                        <input type="text"
+                                                                               placeholder="Enter tag name"
+                                                                               (input)="filterTags($event)"
+                                                                               (keydown)="filterTagsInputKeyDown($event)"
+                                                                               [maxLength]="50"
+                                                                               #newTagInput>
+                                                                    </div>
+                                                                    <button class="toggle-edit-mode"
+                                                                            mat-icon-button
+                                                                            (click)="toggleTagsEditMode()">
+                                                                        <mat-icon *ngIf="!tagsEditMode"
+                                                                                  [svgIcon]="'edit'"></mat-icon>
+                                                                        <mat-icon *ngIf="tagsEditMode"
+                                                                                  [svgIcon]="'check'"></mat-icon>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="available-tags"
+                                                                     [ngClass]="{'editing': tagsEditMode}">
+                                                                    <!-- Tags -->
+                                                                    <ng-container *ngIf="!tagsEditMode">
+                                                                        <mat-checkbox *ngFor="let tag of filteredTags; trackBy: trackByFn"
+                                                                                      [color]="'primary'"
+                                                                                      [checked]="selectedProduct.tags.includes(tag.id)"
+                                                                                      (change)="toggleProductTag(tag, $event)">
+                                                                            {{tag.title}}
+                                                                        </mat-checkbox>
+                                                                    </ng-container>
+                                                                    <!-- Tags editing -->
+                                                                    <ng-container *ngIf="tagsEditMode">
+                                                                        <div class="tag-edit"
+                                                                             *ngFor="let tag of filteredTags; trackBy: trackByFn">
+                                                                            <mat-form-field class="treo-mat-dense treo-mat-no-subscript">
+                                                                                <input matInput
+                                                                                       [value]="tag.title"
+                                                                                       (input)="updateTagTitle(tag, $event)">
+                                                                                <button mat-icon-button
+                                                                                        (click)="deleteTag(tag)"
+                                                                                        matSuffix>
+                                                                                    <mat-icon [svgIcon]="'delete'"></mat-icon>
+                                                                                </button>
+                                                                            </mat-form-field>
+                                                                        </div>
+                                                                    </ng-container>
+                                                                </div>
+                                                                <div class="create-tag"
+                                                                     *ngIf="shouldShowCreateTagButton(newTagInput.value)"
+                                                                     (click)="createTag(newTagInput.value); newTagInput.value = ''"
+                                                                     matRipple>
+                                                                    <mat-icon [svgIcon]="'add'"></mat-icon>
+                                                                    <div>Create "<b>{{newTagInput.value}}</b>"</div>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="flex items-center justify-between w-full border-t px-8 py-4">
+                                                <button class="-ml-4"
+                                                        mat-button
+                                                        [color]="'warn'"
+                                                        (click)="deleteSelectedProduct()">
+                                                    Delete
+                                                </button>
+                                                <div class="flex items-center">
+                                                    <div class="flex items-center mr-4"
+                                                         *ngIf="flashMessage">
+                                                        <ng-container *ngIf="flashMessage === 'success'">
+                                                            <mat-icon class="text-green"
+                                                                      [svgIcon]="'check'"></mat-icon>
+                                                            <span class="ml-2">Product updated</span>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="flashMessage === 'error'">
+                                                            <mat-icon class="text-red"
+                                                                      [svgIcon]="'remove'"></mat-icon>
+                                                            <span class="ml-2">An error occurred, try again!</span>
+                                                        </ng-container>
+                                                    </div>
+                                                    <button mat-flat-button
+                                                            [color]="'primary'"
+                                                            (click)="updateSelectedProduct()">
+                                                        Update
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row
+                            *matHeaderRowDef="productsTableColumns; sticky: true"></tr>
+                        <tr class="product-row"
+                            mat-row
+                            *matRowDef="let product; columns: productsTableColumns;"></tr>
+                        <tr class="product-details-row"
+                            mat-row
+                            *matRowDef="let row; columns: ['productDetails']"></tr>
+
+                    </table>
+
+                </div>
+
+                <mat-paginator [ngClass]="{loading: isLoading}"
+                               [length]="pagination.length"
+                               [pageIndex]="pagination.page"
+                               [pageSize]="pagination.size"
+                               [pageSizeOptions]="pageSizeOptions"
+                               [showFirstLastButtons]="false"
+                               (page)="pageChanged($event)"></mat-paginator>
+
+            </ng-container>
+
+            <ng-template #noProducts>
+                <div class="no-products">There are no products!</div>
+            </ng-template>
+
+        </div>
+
+    </div>
+
+</div>

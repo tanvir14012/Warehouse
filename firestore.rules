@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+  // Check admin role from userRoles collection
+  	function isAdmin() {
+    	let userRole = get(/databases/$(database)/documents/userRoles/$(request.auth.uid));
+    	return  userRole != null && userRole.data.role == 'admin';
+    }
+    
+  	 match /{document=**} {
+      allow read, write: if request.auth != null && isAdmin();
+    }
+    
+    match /userRoles/{userId} {
+    
+    function isUserDoc() {
+    	return userId == request.auth.uid;
+    }
+      allow read: if request.auth != null && 
+        (isAdmin() || isUserDoc());
+        
+      allow write: if request.auth != null && isAdmin();
+    }
+    //check if user is the owner of the webshop
+    function webshopOwner(webshopId) {
+    	let userRole = get(/databases/$(database)/documents/userRoles/$(request.auth.uid));
+    	return  userRole != null && webshopId in userRole.data.webshopIDs;
+    }
+    match /webshop/{webshopId} {
+    	allow read, write: if request.auth != null && webshopOwner(webshopId);		
+    }
+    
+    //if user has ownership access permission
+    match /orders/{orderId} {
+          allow read, write: if request.auth != null && 
+          (("ownerUserIds" in resource.data) && request.auth.uid in resource.data.ownerUserIds)
+        }
+    match /product/{productId} {
+    	allow read, write: if request.auth != null && 
+      (("ownerUserIds" in resource.data) && request.auth.uid in resource.data.ownerUserIds)
+    }
+    
+    match /status/{statusId} {
+    	allow read: if request.auth != null;
+    }
+    
+    function hasOrderHistoryAccess(orderId){
+    	let order = get(/databases/$(database)/documents/orders/$(orderId));
+      return order != null 
+      		&& ("ownerUserIds" in order.data)  
+          && request.auth.uid in order.data.ownerUserIds;
+    }
+    match /orderhistory/{Id} {
+    	allow read, write: if request.auth != null 
+      	&& hasOrderHistoryAccess(resource.data.order);
+    }
+    
+    match /shipmentMethods/{Id} {
+    	allow read, write: if request.auth != null;
+    }
+  }
+}
+

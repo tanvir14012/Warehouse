@@ -1,0 +1,182 @@
+<div class="content-layout fullwidth-standard-normal-scroll">
+  <div class="header">
+    <div class="container">
+      <div class="breadcrumb">
+        <span class="path">Home</span>
+        <span class="separator">/</span>
+        <span class="path">Profile</span>
+      </div>
+      <h1>Profile Settings</h1>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="max-w-3xl">
+      <form>
+        <div class="flex flex-col mt-3 p-8 pb-5 bg-card rounded shadow overflow-hidden">
+          <p class="text-lg font-semibold">Profile</p>
+          <p class="text-secondary">This information will be displayed publicly so be careful what you share.</p>
+          <mat-divider class="mt-8 mb-8"></mat-divider>
+          <div>
+            <label for="about" class="block text-lg font-medium text-gray-700"> Website </label>
+            <div class="mt-1 flex">
+              <mat-form-field class="flex-auto">
+                <input matInput [placeholder]="'www.example.com'" />
+                <span matPrefix>http://</span>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="mt-5">
+            <label for="about" class="block text-lg font-medium text-gray-700"> About </label>
+            <div class="mt-1 flex">
+              <mat-form-field class="treo-mat-textarea flex-auto">
+                <textarea matInput [rows]="3"></textarea>
+              </mat-form-field>
+            </div>
+            <p class="mt-2 text-sm text-gray-500">Brief description for your profile. URLs are hyperlinked.</p>
+          </div>
+          <div class="mt-5">
+            <label class="block text-lg font-medium text-gray-700"> Photo </label>
+            <div class="mt-2 flex items-center">
+              <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                <svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </span>
+              <button
+                type="button"
+                class="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-lg leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Change
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <label class="block text-lg font-medium text-gray-700"> Cover photo </label>
+            <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+              <div class="space-y-1 text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                  <path
+                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <div class="flex text-lg text-gray-600">
+                  <label
+                    for="file-upload"
+                    class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                  >
+                    <span>Upload a file</span>
+                    <input id="file-upload" name="file-upload" type="file" class="sr-only" />
+                  </label>
+                  <p class="pl-1">or drag and drop</p>
+                </div>
+                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col mt-3 p-8 pb-5 bg-card rounded shadow overflow-hidden">
+          <p class="text-lg font-semibold">Personal information</p>
+          <p class="text-secondary">Use a permanent address where you can receive mail.</p>
+          <mat-divider class="mt-8 mb-10"></mat-divider>
+          <div class="flex flex-col gt-xs:flex-row">
+            <mat-form-field class="flex-auto gt-xs:pr-3">
+              <mat-label>First Name</mat-label>
+              <input matInput [placeholder]="'First name'" />
+              <mat-icon matPrefix [svgIcon]="'account_circle'"></mat-icon>
+            </mat-form-field>
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Last Name</mat-label>
+              <input matInput [placeholder]="'Last name'" />
+              <mat-icon matPrefix [svgIcon]="'account_circle'"></mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="flex">
+            <mat-form-field class="flex-auto">
+              <mat-label>Email</mat-label>
+              <input matInput [placeholder]="'Email Address'" />
+              <mat-icon matPrefix [svgIcon]="'mail'"></mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col gt-xs:flex-row">
+            <mat-form-field class="flex-auto gt-xs:pr-3">
+              <mat-label>Country</mat-label>
+              <mat-select [placeholder]="'Country / Region'">
+                <mat-option value="country-1">Country 1</mat-option>
+                <mat-option value="country-2">Country 2</mat-option>
+                <mat-option value="country-3">Country 3</mat-option>
+              </mat-select>
+              <mat-icon matPrefix [svgIcon]="'room'"></mat-icon>
+            </mat-form-field>
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Language</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Language 1</mat-option>
+                <mat-option value="language-2">Language 2</mat-option>
+                <mat-option value="language-3">Language 3</mat-option>
+              </mat-select>
+              <mat-icon matPrefix [svgIcon]="'language'"></mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col gt-xs:flex-row">
+            <mat-form-field class="flex-auto gt-xs:pr-3">
+              <mat-label>Street</mat-label>
+              <input matInput [placeholder]="'Street'" />
+              <mat-icon matPrefix [svgIcon]="'landscape'"></mat-icon>
+            </mat-form-field>
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>City</mat-label>
+              <input matInput [placeholder]="'City'" />
+              <mat-icon matPrefix [svgIcon]="'landscape'"></mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col gt-xs:flex-row">
+            <mat-form-field class="flex-auto gt-xs:pr-3">
+              <mat-label>State</mat-label>
+              <input matInput [placeholder]="'State/Province'" />
+              <mat-icon matPrefix [svgIcon]="'landscape'"></mat-icon>
+            </mat-form-field>
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Postal code</mat-label>
+              <input matInput [placeholder]="'Postal Code'" />
+              <mat-icon matPrefix [svgIcon]="'mail'"></mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="flex flex-col mt-3 p-8 bg-card shadow rounded overflow-hidden">
+          <p class="text-lg font-semibold">Notifications</p>
+          <p class="text-secondary">We'll always let you know about important changes, but you pick what else you want to hear about.</p>
+          <mat-divider class="mt-8 mb-10"></mat-divider>
+          <div class="flex flex-col gt-sm:flex-row">
+            <div class="flex flex-col">
+              <span class="font-semibold mb-2">By Email</span>
+              <div class="flex flex-col">
+                <mat-checkbox class="mb-2" [checked]="true" [color]="'primary'"> Company News </mat-checkbox>
+                <mat-checkbox class="mb-2" [color]="'primary'"> Featured Products </mat-checkbox>
+                <mat-checkbox [checked]="true" [color]="'primary'"> Messages </mat-checkbox>
+              </div>
+            </div>
+            <div class="flex flex-col mt-8 gt-sm:mt-0 gt-sm:ml-16">
+              <span class="font-semibold mb-2">Push Notifications</span>
+              <mat-radio-group class="flex flex-col" [color]="'primary'" [value]="'just-good'">
+                <mat-radio-button class="mb-2" [value]="'everything'"> Everything </mat-radio-button>
+                <mat-radio-button class="mb-2" [value]="'just-good'"> Just the good stuff </mat-radio-button>
+                <mat-radio-button [value]="'no-push'"> No push notifications </mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end mt-10">
+          <button mat-button>Cancel</button>
+          <button class="px-6 ml-3" mat-flat-button [color]="'primary'">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

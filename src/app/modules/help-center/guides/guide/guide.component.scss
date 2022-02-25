@@ -1,0 +1,195 @@
+@import 'treo';
+
+help-center-guides-guide {
+    display: flex;
+
+    .content-layout {
+        position: relative;
+        align-items: center;
+        padding: 0 64px;
+        overflow: hidden;
+
+        @include treo-breakpoint('xs') {
+            padding: 0 24px;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 960px;
+            margin-top: 64px;
+
+            @include treo-breakpoint('xs') {
+                margin-top: 48px;
+            }
+
+            .mat-button {
+                margin: 0 0 12px -16px;
+
+                .mat-button-wrapper {
+
+                    .mat-icon {
+                        margin-right: 8px;
+                        @include treo-icon-size(18);
+                    }
+
+                    span {
+                        font-weight: 500;
+                        line-height: 1;
+                    }
+                }
+            }
+
+            h1 {
+                margin: 0;
+            }
+
+            .subtitle {
+                font-size: 15px;
+                margin: 4px 0 0 0;
+            }
+        }
+
+        .main {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            width: 100%;
+            max-width: 960px;
+            margin: 48px 0 32px 0;
+            padding: 0 !important;
+
+            .guide {
+
+                > * {
+
+                    &:first-child {
+                        margin-top: 0 !important;
+                    }
+                }
+            }
+
+            .footer {
+                display: flex;
+                flex: 1 1 auto;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                margin-top: 32px;
+                padding-top: 32px;
+                border-top-width: 1px;
+
+                @include treo-breakpoint('xs') {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .info {
+                    font-size: 12px;
+                    font-weight: 500;
+                }
+
+                .reaction {
+                    display: flex;
+                    align-items: center;
+
+                    @include treo-breakpoint('xs') {
+                        margin-top: 16px;
+                    }
+
+                    .title {
+                        margin-right: 16px;
+                        font-size: 13px;
+                        font-weight: 600;
+                        line-height: normal;
+                    }
+
+                    .reactions {
+                        display: flex;
+                        align-items: center;
+
+                        .mat-icon-button {
+
+                            &:first-child {
+                                margin-right: 4px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .next {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 960px;
+            width: 100%;
+            margin-bottom: 64px;
+            padding: 24px 40px;
+            border-radius: 4px;
+            transition: box-shadow 225ms cubic-bezier(0.4, 0.0, 0.2, 1);
+            @include treo-elevation();
+
+            @include treo-breakpoint('gt-xs') {
+
+                &:hover {
+                    @include treo-elevation('lg');
+                }
+            }
+
+            .guide-title {
+                margin-top: 4px;
+                font-size: 16px;
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------
+// @ Theming
+// -----------------------------------------------------------------------------------------------------
+@include treo-theme {
+
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+    $is-dark: map-get($theme, is-dark);
+
+    help-center-guides-guide {
+
+        .content-layout {
+
+            .header {
+
+                .subtitle {
+                    color: map-get($foreground, secondary-text);
+                }
+            }
+
+            .main {
+
+                .footer {
+                    color: map-get($foreground, secondary-text);
+
+                    @if ($is-dark) {
+                        border-color: treo-color('cool-gray', 600);
+                    } @else {
+                        border-color: treo-color('cool-gray', 300);
+                    }
+                }
+            }
+
+            .next {
+                background: map-get($background, card);
+
+                .title {
+                    color: map-get($foreground, secondary-text);
+                }
+            }
+        }
+    }
+}

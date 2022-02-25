@@ -1,0 +1,310 @@
+<div class="content-layout right-sidebar-fullheight-basic-inner-scroll">
+
+    <mat-drawer-container (backdropClick)="onBackdropClicked()">
+
+        <!-- Drawer -->
+        <mat-drawer [mode]="drawerMode" [opened]="false" [position]="'end'" [disableClose]="true" #matDrawer>
+
+            <app-detail [order]="selectedOrder"></app-detail>
+
+        </mat-drawer>
+
+        <mat-drawer-content>
+            <div class="main-content">
+                <div class="header-content">
+                    <div class="title">
+                        <h3>Manage Orders</h3>
+                    </div>
+                    <div class="create-btn">
+                        <div class="">
+                            <a href="javascript:void(0)" class="btn btn-primary">Create New Order</a>
+                        </div>
+                        <div class="ml-3">
+                            <a href="javascript:void(0)" class="btn btn-primary">Create New Batch</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-card">
+                    <div class="table-tabs">
+                        <ul>
+                            <li><a [ngClass]="{'active': filter.status === 2}" href="javascript:void(0)"
+                                    (click)="onOrderStatusFilter(2)">All Orders</a></li>
+                            <li><a [ngClass]="{'active': filter.status === 1}" href="javascript:void(0)"
+                                    (click)="onOrderStatusFilter(1)">Open</a></li>
+                            <li><a [ngClass]="{'active': filter.status === 0}" href="javascript:void(0)"
+                                    (click)="onOrderStatusFilter(0)">Unfulfilled</a></li>
+                        </ul>
+                    </div>
+                    <div class="table-body">
+                        <div class="search-box">
+                            <div class="search">
+                                <mat-form-field class="treo-mat-dense treo-mat-no-subscript custom-input">
+                                    <mat-icon matPrefix [svgIcon]="'search'"></mat-icon>
+                                    <input matInput [(ngModel)]="filter.searchQuery" (keyup)="onFilterChange()"
+                                        [autocomplete]="'off'" [placeholder]="'Search orders'">
+                                </mat-form-field>
+                            </div>
+                            <span class="sm-flex">
+
+
+                                <button mat-button [matMenuTriggerFor]="exportMenu">
+                                    <mat-icon matPrefix svgIcon="dripicons:export"></mat-icon> Export
+                                </button>
+                                <mat-menu #exportMenu="matMenu">
+                                    <button mat-menu-item (click)="onClickXLSXExport()">XLSX</button>
+
+                                </mat-menu>
+
+
+
+
+                                <button mat-button [matMenuTriggerFor]="tableSettings">
+                                    <mat-icon matPrefix svgIcon="dripicons:gear"></mat-icon>Table Settings
+                                </button>
+                                <mat-menu #tableSettings="matMenu">
+                                    <li mat-menu-item (click)="$event.stopPropagation();">
+                                        <mat-checkbox [(ngModel)]="isAllShow" (ngModelChange)="updateIsAllShow()">All
+                                        </mat-checkbox>
+                                    </li>
+                                    <li mat-menu-item (click)="$event.stopPropagation();"
+                                        *ngFor="let column of tableColumns">
+                                        <mat-checkbox [(ngModel)]="column.isShow" (ngModelChange)="updateAllComplete()">
+                                            {{column.name}}</mat-checkbox>
+                                    </li>
+                                </mat-menu>
+
+
+
+                            </span>
+                        </div>
+
+                        <div class="list-btn">
+                            <div class="group-btn">
+                                <div class="btn sort-btn">
+                                    <mat-icon svgIcon="dripicons:experiment"></mat-icon><span> Filter&nbsp;By</span>
+                                </div>
+
+                                <mat-form-field class="custom-select" appearance="fill">
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate [(ngModel)]="filter.startDate" placeholder="Start date">
+                                        <input matEndDate [(ngModel)]="filter.endDate" placeholder="End date"
+                                            (dateChange)="onFilterChange()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+                                <mat-form-field class="custom-select">
+                                    <mat-select [(ngModel)]="filter.status" (selectionChange)="onFilterChange()"
+                                        [placeholder]="'Fulfillment status'">
+                                        <mat-option [value]="2">All Statuses</mat-option>
+                                        <mat-option [value]="1">Fulfilled</mat-option>
+                                        <mat-option [value]="0">Unfulfilled</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field class="custom-select">
+                                    <mat-select [(ngModel)]="filter.readyToShip" (selectionChange)="onFilterChange()"
+                                        [placeholder]="'Ready to Ship'">
+                                        <mat-option [value]="2">All Ready To Ship</mat-option>
+                                        <mat-option [value]="1">Yes</mat-option>
+                                        <mat-option [value]="0">No</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field class="custom-select">
+                                    <mat-select [placeholder]="'In tote'">
+                                        <mat-option selected value="valid">All tote</mat-option>
+                                        <mat-option selected value="valid">Yes</mat-option>
+                                        <mat-option value="invalid">No</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field class="custom-select">
+                                    <mat-select [(ngModel)]="filter.userLock" (selectionChange)="onFilterChange()"
+                                        [placeholder]="'Locked orders'">
+                                        <mat-option [value]="2">All Lock Orders</mat-option>
+                                        <mat-option [value]="1">Yes</mat-option>
+                                        <mat-option [value]="0">No</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                 
+                                    <mat-form-field class="custom-select last">
+                                        <mat-select  placeholder="WebShop">
+                                    
+                                            <mat-option *ngFor="let webShop of webShops; let i =index" [value]="webShop">
+                                    
+                                                <mat-checkbox [checked]="getChecked(webShop)" > {{webShop}}</mat-checkbox>
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="contacts-list">
+                            <!--  -->
+                            <ng-container>
+                                <div *ngIf="ordersCount > 0">
+                                    <!-- Table -->
+                                    <table multiTemplateDataRows mat-table matSort [dataSource]="dataSource"
+                                        (matSortChange)="sortOrders($event)" [trackBy]="trackByFn">
+
+                                        <ng-container matColumnDef="select">
+                                            <th mat-header-cell *matHeaderCellDef>
+                                                <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                    [checked]="selection.hasValue() && isAllSelected()"
+                                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                    [aria-label]="checkboxLabel()">
+                                                </mat-checkbox>
+                                            </th>
+                                            <td mat-cell *matCellDef="let order">
+                                                <mat-checkbox (click)="$event.stopPropagation()"
+                                                    (change)="$event ? selection.toggle(order) : null"
+                                                    [checked]="selection.isSelected(order)"
+                                                    [aria-label]="checkboxLabel(order)">
+                                                </mat-checkbox>
+                                            </td>
+                                        </ng-container>
+
+                                        <!-- Ref -->
+                                        <ng-container matColumnDef="order">
+                                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                                Order
+                                            </th>
+                                            <td mat-cell *matCellDef="let order">
+                                                #{{order.orderNo}}
+                                            </td>
+                                        </ng-container>
+
+                                        <!-- Date -->
+                                        <ng-container matColumnDef="creationDate">
+                                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                                Creation Date
+                                            </th>
+                                            <td mat-cell *matCellDef="let order">
+                                                <ng-container>
+                                                    {{order.creationDate | date : 'MM/dd/yy h:mm a'}}
+                                                </ng-container>
+                                            </td>
+                                        </ng-container>
+
+                                        <!-- Receiver -->
+                                        <ng-container matColumnDef="userLock">
+                                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                                User Lock
+                                            </th>
+                                            <td mat-cell *matCellDef="let order">
+                                                <ng-container>
+                                                    {{order.userLock ? 'Yes': 'No'}}
+                                                </ng-container>
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="status">
+                                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                                Status
+                                            </th>
+                                            <td mat-cell *matCellDef="let order">
+                                                <ng-container>
+                                                    <span *ngIf="order.status"
+                                                        class="inline-flex items-center green-200 font-bold text-xs px-2 py-2px rounded-full tracking-wide">
+                                                        Fulfilled
+                                                    </span>
+                                                    <span *ngIf="!order.status"
+                                                        class="inline-flex items-center red-200 font-bold text-xs px-2 py-2px rounded-full tracking-wide">
+                                                        Unfulfilled
+                                                    </span>
+                                                </ng-container>
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="wareHouse">
+                                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                                Warehouses
+                                            </th>
+                                            <td mat-cell *matCellDef="let order">
+                                                <ng-container>{{order.wareHouse}}</ng-container>
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="customer">
+                                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                                Customer
+                                            </th>
+                                            <td mat-cell *matCellDef="let order">
+                                                <ng-container>{{order.customer}}</ng-container>
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="email">
+                                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                                Email
+                                            </th>
+                                            <td mat-cell *matCellDef="let order">
+                                                <ng-container>{{order.email}}</ng-container>
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="readyToShip">
+                                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                                Ready To Ship
+                                            </th>
+                                            <td mat-cell *matCellDef="let order">
+                                                <ng-container>
+                                                    <span *ngIf="order.readyToShip">
+                                                        <mat-icon style="color: green;" svgIcon="feather:check">
+                                                        </mat-icon>Yes
+                                                    </span>
+                                                    <span *ngIf="!order.readyToShip">
+                                                        <mat-icon svgIcon="feather:x-circle"></mat-icon>NO
+                                                    </span>
+                                                </ng-container>
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="requiredShipDate">
+                                            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                                Required Ship Date
+                                            </th>
+                                            <td mat-cell *matCellDef="let order">
+                                                <ng-container>{{order.requiredShipDate}}</ng-container>
+                                            </td>
+                                        </ng-container>
+
+
+                                        <tr mat-header-row *matHeaderRowDef="ordersTableColumns"></tr>
+                                        <tr class="contact-row"
+                                            [ngClass]="{'selected':selectedOrder &&  selectedOrder?.orderNo === row.orderNo}" mat-row
+                                            *matRowDef="let row; columns: ordersTableColumns;"
+                                            (click)="goToOrder(row.orderNo)">
+                                        </tr>
+
+                                    </table>
+                                </div>
+
+                            </ng-container>
+
+                            <ng-template #noContacts>
+                                <div *ngIf="(orders$ | async)?.length === 0" class="no-contacts">There are no orders!
+                                </div>
+                            </ng-template>
+                            <ng-container>
+                                <div class="flex-center" *ngIf="isInitialLoading">
+                                    <mat-spinner></mat-spinner>
+                                </div>
+                                <!-- <div class="no-contacts" *ngIf="isLoading && !isInitialLoading">Loading...</div> -->
+                            </ng-container>
+
+
+                        </div>
+                        <ng-container *ngIf="ordersCount > 0">
+                            <div >
+                                <mat-paginator class="custom-page" [pageSize]="pageSize"
+                                    [pageSizeOptions]="pageSizeOptions" (page)="paginate($event)">
+                                </mat-paginator>
+                            </div>
+                        </ng-container>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+
+</div>

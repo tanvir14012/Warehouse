@@ -1,0 +1,196 @@
+<div class="content-layout right-sidebar-fullheight-basic-inner-scroll">
+
+    <mat-drawer-container (backdropClick)="onBackdropClicked()">
+
+        <!-- Drawer -->
+        <mat-drawer [mode]="drawerMode" [opened]="false" [position]="'end'" [disableClose]="true" #matDrawer>
+
+            <router-outlet></router-outlet>
+
+        </mat-drawer>
+
+        <mat-drawer-content>
+
+            <!-- Main -->
+            <div class="main">
+
+                <!-- Header -->
+                <div class="header">
+
+                    <!-- Title -->
+                    <div class="title">
+
+                        <h1>Orders</h1>
+
+                        <div class="contacts-count" *ngIf="!isSearching">
+                            <ng-container>
+                                {{ordersCount}}
+                            </ng-container>
+                            {{ordersCount | i18nPlural: {
+                            '=0' : 'order',
+                            '=1' : 'order',
+                            'other': 'orders'
+                            } }}
+                        </div>
+                        <div class="contacts-count" *ngIf="isSearching && totalHits >= 0">
+                            <ng-container >
+                                {{totalHits}}
+                            </ng-container>
+                            {{totalHits | i18nPlural: {
+                            '=0' : 'order found in search',
+                            '=1' : 'order found in search',
+                            'other': 'orders found in search'
+                            } }}
+                        </div>
+
+                    </div>
+
+                    <!-- Main actions -->
+                    <div class="main-actions">
+
+                        <!-- Search -->
+                        <div class="search">
+
+                            <mat-form-field class="treo-mat-dense treo-mat-no-subscript">
+                                <mat-icon *ngIf="search.value.trim().length === 0" matPrefix [svgIcon]="'search'"></mat-icon>
+                                <mat-icon *ngIf="search.value.trim().length > 2"
+                                     matPrefix [svgIcon]="'clear'"
+                                     (click)="clearSearch()"></mat-icon>
+                                <input type="search" matInput [formControl]="searchInputControl" [autocomplete]="'off'"
+                                    [placeholder]="'Search orders'" #search>
+                            </mat-form-field>
+
+                        </div>
+
+                        <!-- Add contact button -->
+                        <button class="add-contact" (click)="addOrder()" mat-flat-button [color]="'primary'">
+                            <mat-icon [svgIcon]="'add'"></mat-icon>
+                            Add
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Orders list -->
+                <div class="contacts-list">
+                    <!--  -->
+                    <ng-container>
+                        <div *ngIf="(!isSearching && ordersCount > 0) || (isSearching && totalHits > 0); else noContacts">
+                            <!-- Table -->
+                            <table multiTemplateDataRows mat-table matSort [dataSource]="dataSource"
+                                (matSortChange)="sortOrders($event)" [trackBy]="trackByFn">
+
+                                <!-- Ref -->
+                                <ng-container matColumnDef="reference">
+                                    <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                        Reference
+                                    </th>
+                                    <td mat-cell *matCellDef="let order">
+                                        <span *ngIf="!isSearching">{{order.visible_ref}}</span>
+                                        <span *ngIf="isSearching">{{order.visible_ref}}</span>
+                                        
+                                    </td>
+                                </ng-container>
+
+                                <!-- Date -->
+                                <ng-container matColumnDef="date">
+                                    <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                        Date
+                                    </th>
+                                    <td mat-cell *matCellDef="let order">
+                                        <ng-container>
+                                            {{order.created_at}}
+                                        </ng-container>
+                                    </td>
+                                </ng-container>
+
+                                <!-- Receiver -->
+                                <ng-container matColumnDef="receiver">
+                                    <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                        Receiver
+                                    </th>
+                                    <td mat-cell *matCellDef="let order">
+                                        <ng-container>
+                                            {{order.delivery_address?.att_contact}}
+                                        </ng-container>
+                                    </td>
+                                </ng-container>
+
+                                <!-- Shop -->
+                                <ng-container matColumnDef="shop">
+                                    <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                        Shop
+                                    </th>
+                                    <td mat-cell *matCellDef="let order">
+                                        <ng-container>{{order.sender_address?.company_name}}</ng-container>
+                                    </td>
+                                </ng-container>
+
+                                <!-- Status -->
+                                <ng-container matColumnDef="status">
+                                    <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                        Status
+                                    </th>
+                                    <td mat-cell *matCellDef="let order">
+                                        <ng-container>
+                                            <span
+                                                class="inline-flex items-center font-bold text-xs px-2 py-2px rounded-full tracking-wide uppercase"
+                                                [ngClass]="getStatusColor(order.status_id) + '-200'">
+                                                <span class="w-2 h-2 rounded-full mr-2" [ngClass]="getStatusColor(order.status_id)">
+                                                </span>
+                                                <span class="pr-2px leading-relaxed whitespace-no-wrap">
+                                                    {{statuses.get(order.status_id)?.name}}
+                                                </span>
+                                            </span>
+                                        </ng-container>
+                                    </td>
+                                </ng-container>
+                                <!-- Description row-->
+                                <!-- <ng-container matColumnDef="description">
+                                            <td style=" margin-left: 5px;" mat-cell *matCellDef="let order" [attr.colspan]="5">
+                                                sdflj lsdfjl sdfjlsdj flsdf 
+                                          </td>
+                                </ng-container> -->
+
+                                <tr mat-header-row *matHeaderRowDef="ordersTableColumns"></tr>
+                                <tr class="contact-row" [ngClass]="{'selected': selectedOrderId === row.uniqueId}"
+                                    mat-row *matRowDef="let row; columns: ordersTableColumns;"
+                                    (click)="goToOrder(row.uniqueId)">
+                                </tr>
+                                <!-- <tr class="contact-row" style="border-top: 2px solid white;"
+                                    [ngClass]="{'selected': selectedOrderId === row.uniqueId}" mat-row 
+                                    *matRowDef="let row; columns: ['description']" (click)="goToOrder(row.uniqueId)">
+                                </tr> -->
+                            </table>
+                        </div>
+
+                    </ng-container>
+
+                    <ng-template #noContacts>
+                        <div *ngIf="!isSearching && (orders$ | async)?.length === 0" class="no-contacts">There are no orders!</div>
+                        <div *ngIf="isSearching && totalHits === 0" class="no-contacts">There are no orders matching the search query!</div>
+                    </ng-template>
+                    <ng-container>
+                        <div class="flex-center" *ngIf="isInitialLoading">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                        <!-- <div class="no-contacts" *ngIf="isLoading && !isInitialLoading">Loading...</div> -->
+                    </ng-container>
+                    <ng-container *ngIf="(!isSearching && ordersCount > 0) || (isSearching && totalHits > 0)">
+                        <div [hidden]="isLoading">
+                            <mat-paginator [length]="isSearching ? totalHits:ordersCount" [pageSize]="pageSize"
+                                [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = paginate($event)">
+                            </mat-paginator>
+                        </div>
+                    </ng-container>
+
+                </div>
+
+            </div>
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+
+</div>

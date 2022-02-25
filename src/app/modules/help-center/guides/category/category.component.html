@@ -1,0 +1,31 @@
+<div class="content-layout fullwidth-basic-normal-scroll">
+
+    <!-- Header -->
+    <div class="header">
+
+        <a mat-button
+           [routerLink]="['../../../../']"
+           [color]="'primary'">
+            <mat-icon [svgIcon]="'arrow_back'"></mat-icon>
+            <span>Back to Guides & Resources</span>
+        </a>
+        <h1>{{guideCategory.title}}</h1>
+
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <div class="guides">
+
+            <a class="link guide"
+               *ngFor="let guide of guideCategory.guides; trackBy: trackByFn"
+               [routerLink]="[guide.slug]">
+                {{guide.title}}
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

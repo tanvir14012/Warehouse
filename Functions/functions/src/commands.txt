@@ -1,0 +1,15 @@
+npm run-script lint
+
+npm run-script build
+
+firebase serve --only functions
+
+>firebase functions:config:set algolia.app_id="2D3A8KL84X" 
+algolia.api_key="2baf62ce6c77f85799581b732a6205f2"
+algolia.search_key="4992f90fb7b4d41e546cfdd67f8e3fb9"
+
+firebase functions:config:get > .runtimeconfig.json
+
+set GOOGLE_APPLICATION_CREDENTIALS=sendr-23393-3f100dae89e9.json 
+
+firebase emulators:start

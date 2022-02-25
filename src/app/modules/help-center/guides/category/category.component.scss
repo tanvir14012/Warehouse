@@ -1,0 +1,91 @@
+@import 'treo';
+
+help-center-guides-category {
+    display: flex;
+
+    .content-layout {
+        position: relative;
+        align-items: center;
+        padding: 0 64px;
+        overflow: hidden;
+
+        @include treo-breakpoint('xs') {
+            padding: 0 24px;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 960px;
+            margin-top: 64px;
+
+            @include treo-breakpoint('xs') {
+                margin-top: 48px;
+            }
+
+            .mat-button {
+                margin: 0 0 12px -16px;
+
+                .mat-button-wrapper {
+
+                    .mat-icon {
+                        margin-right: 8px;
+                        @include treo-icon-size(18);
+                    }
+
+                    span {
+                        font-weight: 500;
+                        line-height: 1;
+                    }
+                }
+            }
+
+            h1 {
+                margin: 0;
+            }
+        }
+
+        .main {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 960px;
+            margin-top: 64px;
+            padding: 0 !important;
+
+            .guides {
+                display: flex;
+                flex-direction: column;
+
+                .guide {
+                    margin-bottom: 12px;
+                    font-size: 15px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------
+// @ Theming
+// -----------------------------------------------------------------------------------------------------
+@include treo-theme {
+
+    $foreground: map-get($theme, foreground);
+    $primary: map-get($theme, primary);
+    $is-dark: map-get($theme, is-dark);
+
+    help-center-guides-category {
+
+        .main {
+
+            .guides {
+
+            }
+        }
+    }
+}

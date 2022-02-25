@@ -1,0 +1,124 @@
+@import 'treo';
+.container {
+    .form-group {
+        margin: 20px 0 20px 0;
+        padding: 20px;
+        border: 1px solid rgba(0,0,0,0.1);
+        box-shadow: 0 0 2px 1px rgba(0,0,0, 0.1);
+        width: 100%;
+        overflow: auto;
+
+        .form-group-title {
+            width: 100%;
+            float: left;
+            margin-bottom: 20px;
+            @include treo-breakpoint('gt-sm') {
+                width: 20%;
+            }
+            @include treo-breakpoint('gt-md') {
+                width: 30%;
+            }
+        }
+        .form-group-body {
+            width: 100%;
+            float: right;
+            @include treo-breakpoint('gt-sm') {
+                width: 80%;
+            }
+            @include treo-breakpoint('gt-md') {
+                width: 70%;
+            }          
+            .input-group {
+                width: 100%;
+                @include treo-breakpoint('gt-sm') {
+                    width: 80%;
+                }
+                @include treo-breakpoint('gt-md') {
+                    width: 60%;
+                }
+                .zip {
+                    width: 30%;
+                }
+                .city {
+                    margin-left: 5%;
+                    width: 65%;
+                }
+                .phone {
+                    width: 45%;
+                    margin-right: 5%;
+                }
+                .mail {
+                    width: 50%;
+                }
+                @include treo-breakpoint('lt-lg') {
+                    .phone {
+                        width: 100%;
+                    }
+                    .mail {
+                        width: 100%;
+                    }
+                }
+                .scale-4x {
+                    transform: scale(4,4);
+                }
+                @include treo-breakpoint('lt-md') {
+                    .scale-4x {
+                        transform: scale(2,2);
+                    }
+                }
+            }
+            .mat-select-panel mat-option.mat-option {
+                height: unset;
+              }
+          
+             .mat-option-text.mat-option-text {
+                white-space: normal;
+              }
+        }
+        .hr {
+            width: 100%;
+            @include treo-breakpoint('gt-sm') {
+                width: 82%;
+            }
+            @include treo-breakpoint('gt-md') {
+                width: 72%;
+            }
+        }
+        table {
+            width: 100%;
+            table-layout: auto;
+            @include treo-breakpoint('gt-lg') {
+                table-layout: fixed;
+            }
+
+            th,td {
+                text-align: left;
+                &.min-wd-240 {
+                    min-width: 240px !important;
+                }
+                &.max-wd-110 {
+                    max-width: 110px !important;
+                }
+                mat-form-field {
+                    width: 100%;
+                    .wd-60 {
+                        width: 60%;
+                    }
+                    .wd-40 {
+                        width: 40%;
+                    }
+                    .ht-100{
+                        height: 100%;
+                    }
+                    .border-light{
+                        border-left: 1px solid rgba(0,0,0,0.1);
+                        padding-left: 0.125rem;
+                    }
+                }
+            }
+        }
+        
+    }
+}       
+
+

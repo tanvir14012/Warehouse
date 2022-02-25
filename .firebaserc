@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "sendr-23393": {
+      "hosting": {
+        "treo": [
+          "sendr-23393"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "sendr-23393"
+  }
+}

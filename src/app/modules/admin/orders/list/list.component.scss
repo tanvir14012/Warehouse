@@ -1,0 +1,365 @@
+@import 'treo';
+
+orders-list {
+    display: flex;
+    flex: 1 1 auto;
+
+    .mat-drawer-container {
+
+        .mat-drawer {
+            width: 512px !important;
+            min-width: 512px !important;
+            max-width: 512px !important;
+
+            @include treo-breakpoint('xs') {
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+
+        .mat-drawer-content {
+
+            .main {
+                padding: 0 !important;
+                min-height: 100%;
+
+                .header {
+                    display: flex;
+                    flex: 1 1 auto;
+                    align-items: center;
+                    padding: 40px 32px;
+                    border-bottom-width: 1px;
+
+                    @include treo-breakpoint('xs') {
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+
+                    .title {
+                        margin-right: 32px;
+
+                        @include treo-breakpoint('xs') {
+                            margin-right: 0;
+                        }
+
+                        h1 {
+                            margin: 0;
+                            line-height: 1;
+                        }
+                    }
+
+                    .contacts-count {
+                        margin-left: 2px;
+                        font-weight: 500;
+                    }
+
+                    .main-actions {
+                        display: flex;
+                        align-items: center;
+                        margin-left: auto;
+
+                        @include treo-breakpoint('xs') {
+                            margin-top: 32px;
+                            margin-left: 0;
+                            width: 100%;
+                        }
+
+                        .search {
+                            flex: 1 1 auto;
+                            margin-right: 16px;
+                            min-width: 200px;
+                            width: 100%;
+
+                            @include treo-breakpoint('xs') {
+                                min-width: 0;
+                            }
+
+                            .mat-form-field {
+                                width: 100%;
+                            }
+                        }
+
+                        .add-contact {
+                            flex: 1 0 auto;
+                            padding: 0 20px 0 16px;
+
+                            .mat-icon {
+                                margin-right: 8px;
+                                @include treo-icon-size(20);
+                            }
+                        }
+                    }
+                }
+
+                .contacts-list {
+
+                    table {
+                        width: 100%;
+                        table-layout: fixed;
+
+                        thead {
+                            @include treo-breakpoint('xs') {
+                                display: none;
+                            }
+
+                            th {
+
+                                &:first-child {
+                                    padding-left: 32px;
+                                    max-width: 160px;
+                                }
+                                &:nth-child(2) {
+                                    max-width: 240px;
+                                }
+
+                                &:last-child {
+                                    padding-left: 32px;
+                                    max-width: 160px;
+                                }
+
+                                &.mat-column-receiver {
+                                    max-width: 240px;
+                                    @include treo-breakpoint('(max-width: 720px)') {
+                                        display: none;
+                                    }
+                                }
+
+                                &.mat-column-shop {
+                                    max-width: 160px;
+
+                                    @include treo-breakpoint('lt-lg') {
+                                        display: none;
+                                    }
+                                }
+                                &.mat-column-status {
+                                    max-width: 160px;
+
+                                    @include treo-breakpoint('lt-lg') {
+                                        display: none;
+                                    }
+                                }
+                            }
+                        }
+
+                        tr.contact-row {
+                            height: 64px;
+                            cursor: pointer;
+
+                            td {
+                                line-height: 1;
+                                border-bottom-width: 1px;
+
+                                &:first-child {
+                                    padding-left: 32px;
+                                }
+
+                                &:last-child {
+                                    padding-right: 32px;
+                                }
+
+                                &.mat-column-reference {
+                                    max-width: 160px;
+
+                                    .name-content {
+                                        display: flex;
+                                        align-items: center;
+
+                                        .avatar {
+                                            position: relative;
+                                            width: 32px;
+                                            min-width: 32px;
+                                            max-width: 32px;
+                                            height: 32px;
+                                            min-height: 32px;
+                                            max-height: 32px;
+                                            margin-right: 24px;
+                                            overflow: hidden;
+                                            border-radius: 50%;
+
+                                            > span {
+                                                border-radius: 50%;
+                                            }
+
+                                            > img {
+                                                object-fit: cover;
+                                                width: 100%;
+                                                height: 100%;
+                                            }
+
+                                            > span {
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                width: 100%;
+                                                height: 100%;
+                                                text-transform: uppercase;
+                                                font-size: 16px;
+                                            }
+                                        }
+
+                                        .name {
+                                            overflow: hidden;
+                                            white-space: nowrap;
+                                            text-overflow: ellipsis;
+                                            line-height: normal;
+                                        }
+                                    }
+                                }
+
+                                &.mat-column-date {
+                                    padding-right: 16px;
+                                    max-width: 240px;
+                                    overflow: hidden;
+                                    white-space: nowrap;
+                                    text-overflow: ellipsis;
+
+                                    @include treo-breakpoint('xs') {
+                                        display: none;
+                                    }
+                                }
+
+                                &.mat-column-receiver {
+                                    padding-right: 16px;
+                                    max-width: 240px;
+                                    overflow: hidden;
+                                    white-space: nowrap;
+                                    text-overflow: ellipsis;
+
+                                    @include treo-breakpoint('(max-width: 720px)') {
+                                        display: none;
+                                    }
+                                }
+
+                                &.mat-column-shop {
+                                    max-width: 160px;
+                                    overflow: hidden;
+                                    white-space: nowrap;
+                                    text-overflow: ellipsis;
+
+                                    @include treo-breakpoint('lt-lg') {
+                                        display: none;
+                                    }
+                                }
+                                &.mat-column-status {
+                                    padding-left: 32px;
+                                    max-width: 160px;
+                                    overflow: hidden;
+                                    white-space: nowrap;
+                                    text-overflow: ellipsis;
+
+                                    @include treo-breakpoint('lt-lg') {
+                                        display: none;
+                                    }
+                                    .status {
+                                        background-color: rgba(0,0,0,0.2);
+                                        border: 1 px solid rgba(0,0,0,0.2);
+                                        padding: 5px 10px 5px 10px;
+                                        border-radius: 15px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .no-contacts {
+                        padding: 64px;
+                        font-size: 24px;
+                        text-align: center;
+
+                        @include treo-breakpoint('xs') {
+                            padding: 32px;
+                        }
+                    }
+                    .flex-center {
+                        display:flex; 
+                        justify-content: center;
+                        padding: 64px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------
+// @ Theming
+// -----------------------------------------------------------------------------------------------------
+@include treo-theme {
+
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+    $primary: map-get($theme, primary);
+    $is-dark: map-get($theme, is-dark);
+
+    orders-list {
+
+        .mat-drawer-container {
+            @if (not $is-dark) {
+                background: map-get($background, card);
+            }
+
+            .mat-drawer-content {
+
+                .main {
+
+                    .header {
+
+                        .contacts-count {
+                            color: map-get($foreground, secondary-text);
+                        }
+                    }
+
+                    .contacts-list {
+
+                        table {
+                            background: transparent;
+
+                            th {
+                                @if ($is-dark) {
+                                    background: rgba(0, 0, 0, 0.05);
+                                } @else {
+                                    background: treo-color('cool-gray', 50);
+                                }
+
+                            }
+
+                            tr.contact-row {
+
+                                &:hover,
+                                &.selected {
+                                    @if ($is-dark) {
+                                        background: rgba(0, 0, 0, 0.05);
+                                    } @else {
+                                        background: map-get($primary, 50);
+                                    }
+                                }
+
+                                td {
+
+                                    &.mat-column-name {
+
+                                        .avatar {
+
+                                            > span {
+                                                background: treo-color('cool-gray', 200);
+                                                color: treo-color('cool-gray', 600);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .mat-drawer {
+
+                @if ($is-dark) {
+                    background: map-get($background, background);
+                }
+            }
+        }
+    }
+}

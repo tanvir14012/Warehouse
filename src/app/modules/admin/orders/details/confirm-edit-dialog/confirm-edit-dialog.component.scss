@@ -1,0 +1,60 @@
+
+mat-dialog-content {
+
+    .w-15 {
+        width: 15%;
+    }
+
+    .w-80 {
+        width: 80%;
+    }
+
+    .float-left {
+        float: left;
+    }
+
+    .float-right {
+        float: right;
+    }
+
+   
+    @media screen and (min-width: 960px){
+        .mt-lg-10 {
+            margin-top: 10px;
+        }
+    }
+
+    .mb-2 {
+        margin-bottom: 2px !important;
+    }
+
+    .pr-2 {
+        padding-right: 2px;
+    }
+}
+
+mat-dialog-actions {
+
+    .border-light-cm {
+        border: 1px solid #dee2e6;
+    }
+
+    .hover-dim:hover {
+        background-color: rgba(0,0,0,0.01) !important;
+    }
+
+}
+
+.mr-2 {
+    margin-right: 2px;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+@media screen and (min-width: 960px){
+    .w-lg-480 {
+        width: 480px;
+    }
+}

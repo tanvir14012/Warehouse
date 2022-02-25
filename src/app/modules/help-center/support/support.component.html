@@ -1,0 +1,103 @@
+<div class="content-layout fullwidth-basic-normal-scroll">
+
+    <!-- Header -->
+    <div class="header">
+
+        <button mat-button
+                [routerLink]="['../']"
+                [color]="'primary'">
+            <mat-icon [svgIcon]="'arrow_back'"></mat-icon>
+            <span>Back to Help Center</span>
+        </button>
+        <h1>Submit your request</h1>
+
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <div class="card">
+
+            <!-- Message -->
+            <treo-message *ngIf="message"
+                         [appearance]="'outline'"
+                         [type]="message.type"
+                         [showIcon]="false">
+                {{message.content}}
+            </treo-message>
+
+            <form [formGroup]="supportForm">
+
+                <div class="label">Your name</div>
+                <mat-form-field>
+                    <input matInput
+                           [formControlName]="'name'"
+                           [required]="true">
+                    <mat-error *ngIf="supportForm.get('name').hasError('required')">
+                        Required
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="label">Your e-mail address</div>
+                <mat-form-field>
+                    <input matInput
+                           [formControlName]="'email'"
+                           [required]="true">
+                    <mat-error *ngIf="supportForm.get('email').hasError('required')">
+                        Required
+                    </mat-error>
+                    <mat-error *ngIf="supportForm.get('email').hasError('email')">
+                        Enter a valid email address
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="label">In a few words, tell us what your enquiry is about</div>
+                <mat-form-field>
+                    <input matInput
+                           [formControlName]="'subject'"
+                           [required]="true">
+                    <mat-error *ngIf="supportForm.get('subject').hasError('required')">
+                        Required
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="label">Provide a detailed description</div>
+                <mat-form-field class="treo-mat-textarea">
+                    <textarea matInput
+                              [cdkTextareaAutosize]
+                              [cdkAutosizeMinRows]="5"
+                              [cdkAutosizeMaxRows]="5"
+                              [formControlName]="'message'"
+                              [required]="true"></textarea>
+                    <mat-error *ngIf="supportForm.get('message').hasError('required')">
+                        Required
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="actions">
+
+                    <button class="clear-button"
+                            mat-button
+                            [color]="'accent'"
+                            [disabled]="supportForm.pristine || supportForm.untouched"
+                            (click)="clearForm()">
+                        Clear
+                    </button>
+
+                    <button class="submit-button"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [disabled]="supportForm.pristine || supportForm.invalid"
+                            (click)="sendForm()">
+                        Submit
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

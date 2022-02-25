@@ -1,0 +1,397 @@
+<div class="content-layout fullwidth-standard-normal-scroll">
+    <div class="header">
+        <div class="container">
+            <div class="breadcrumb">
+                <span class="path cursor-pointer">Home</span>
+                <span class="separator">/</span>
+                <span (click)="navigateToOrders()" class="path cursor-pointer">My Orders</span>
+                <span class="separator">/</span>
+                <span class="path cursor-pointer">Add Order</span>
+            </div>
+            <h1>Create Order</h1>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="max-w-3xl">
+            <form [formGroup]="form">
+                <div *ngIf="form.invalid && form.touched && formSubmitAttempted" class="mt-3 p-8 pt-5 pb-5 bg-card rounded shadow overflow-hidden text-lg text-red-700">
+                    Please make sure that all field values are correct
+                </div>
+                <div *ngIf="isErrored" class="mt-3 p-8 pt-5 pb-5 bg-card rounded shadow overflow-hidden text-lg text-red-700">
+                    Sorry! Something went wrong. Please check your network connection and try again
+                </div>
+                <div class="flex flex-col mt-3 p-8 pb-5 bg-card rounded shadow overflow-hidden">
+                    <p class="text-lg font-semibold">General</p>
+                    <p class="text-secondary">Your general information in relation to the order.</p>
+                    <mat-divider class="mt-8 mb-8"></mat-divider>
+                    <div>
+                      <label for="about" class="block text-md font-medium text-gray-700"> Order number </label>
+                      <div class="mt-1 flex">
+                        <mat-form-field class="flex-auto gt-xs:pr-3" [class.mat-form-field-invalid]="form.controls.orderNumber.invalid && form.controls.orderNumber.touched">
+                          <input formControlName="orderNumber" [placeholder]="'Enter your order number'" matInput />
+                          <mat-icon matPrefix [svgIcon]="'looks_one'"></mat-icon>
+                          <mat-error *ngIf="form.controls.orderNumber.invalid && form.controls.orderNumber.touched">
+                            <span *ngIf="form.controls.orderNumber.hasError('required')">Order number is
+                                required</span>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="mt-2 flex">
+                        <mat-form-field class="flex-auto gt-xs:pr-3">
+                            <mat-label class="block text-md font-medium text-gray-700">Order channel</mat-label>
+                            <mat-select [placeholder]="'Select order channel'" formControlName="orderChannel"
+                            [class.mat-form-field-invalid]="form.controls.orderChannel.invalid && form.controls.orderChannel.touched">
+                                <mat-option *ngFor="let webshop of webshops;" [value]="webshop.order_channel_id">
+                                    {{webshop.name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="form.controls.orderChannel.invalid && form.controls.orderChannel.touched">
+                                <span *ngIf="form.controls.orderChannel.hasError('required')">Order channel is
+                                    required
+                                </span>
+                            </mat-error>
+                            <mat-icon matPrefix [svgIcon]="'category'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-2 flex">
+                        <mat-form-field class="flex-auto gt-xs:pr-3">
+                            <mat-label class="block text-md font-medium text-gray-700">Status</mat-label>
+                            <mat-select [placeholder]="'Select order status'" formControlName="status"
+                            [class.mat-form-field-invalid]="form.controls.status.invalid && form.controls.status.touched">
+                            <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.key">
+                                {{status.value}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="form.controls.status.invalid && form.controls.status.touched">
+                                <span *ngIf="form.controls.orderChannel.hasError('required')">Status is
+                                    required
+                                </span>
+                            </mat-error>
+                            <mat-icon matPrefix [svgIcon]="'grade'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="flex flex-col mt-3 p-8 pb-5 bg-card rounded shadow overflow-hidden">
+                    <p class="text-lg font-semibold">Receiver</p>
+                    <p class="text-secondary">Who is going to receive the package?</p>
+                    <mat-divider class="mt-8 mb-8"></mat-divider>
+                    <div>
+                        <label for="about" class="block text-md font-medium text-gray-700">Search in address book </label>
+                        <div class="mt-1 flex">
+                            <mat-form-field class="flex-auto gt-xs:pr-3"
+                            [class.mat-form-field-invalid]="form.controls.recipient.invalid && form.controls.recipient.touched">
+                            <mat-icon matPrefix [svgIcon]="'search'"></mat-icon>
+                            <input formControlName="recipient" type="search" matInput [matAutocomplete]="recipientAuto">
+                            <mat-autocomplete #recipientAuto="matAutocomplete">
+                                <mat-option class="h-auto" *ngFor="let recipient of (recipients | async)?.hits" 
+                                    (click)="populateRecipientFields(recipient.billing_address)"
+                                    [value]="recipient.billing_address.att_contact">
+                                    <span class="mr-2 flag-icon flag-icon-{{recipient.billing_address.country_code?.toLowerCase()}}"></span>
+                                    <span>Att: {{recipient.billing_address.att_contact}}</span><br>
+                                    <span class="text-gray-500">{{recipient.billing_address.address_1}} {{recipient.billing_address.address_2}} {{recipient.billing_address.city}}</span> 
+                                    <mat-divider></mat-divider>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        </div>
+                    </div>
+                        <div class="mt-2 flex">
+                            <mat-form-field class="flex-auto gt-xs:pr-3"
+                            [class.mat-form-field-invalid]="form.controls.recipientCompany.invalid && form.controls.recipientCompany.touched">
+                            <mat-label class="block text-md font-medium text-gray-700">Company name</mat-label>
+                            <input formControlName="recipientCompany" type="text" matInput>
+                            <mat-icon matPrefix [svgIcon]="'work'"></mat-icon>
+                        </mat-form-field>                 
+                        </div>
+                        <div class="mt-2 flex">
+                            <mat-form-field class="flex-auto gt-xs:pr-3"
+                            [class.mat-form-field-invalid]="form.controls.recipientContact.invalid && form.controls.recipientContact.touched">
+                            <mat-label class="block text-md font-medium text-gray-700">Contact name</mat-label>
+                            <input formControlName="recipientContact" type="text" matInput>
+                            <mat-icon matPrefix [svgIcon]="'account_circle'"></mat-icon>
+                            <mat-error *ngIf="form.controls.recipientContact.invalid && form.controls.recipientContact.touched">
+                                <span *ngIf="form.controls.recipientContact.hasError('required')">Contact name is required</span>
+                            </mat-error>
+                            </mat-form-field>                 
+                        </div>
+                        <div class="mt-2 flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3"
+                            [class.mat-form-field-invalid]="form.controls.recipientEmail.invalid && form.controls.recipientEmail.touched">
+                            <mat-label class="block text-md font-medium text-gray-700">Email</mat-label>
+                            <input formControlName="recipientEmail" type="text" matInput>
+                            <mat-icon matPrefix [svgIcon]="'email'"></mat-icon>
+                            <mat-error *ngIf="form.controls.recipientEmail.invalid && form.controls.recipientEmail.touched">
+                                <span *ngIf="form.controls.recipientEmail.hasError('required')">Email is required</span>
+                            </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="flex-auto gt-xs:pr-3"
+                            [class.mat-form-field-invalid]="form.controls.recipientPhone.invalid && form.controls.recipientPhone.touched">
+                            <mat-label class="block text-md font-medium text-gray-700">Phone</mat-label>
+                            <input formControlName="recipientPhone" type="text" matInput>
+                            <mat-icon matPrefix [svgIcon]="'phone'"></mat-icon>
+                            <mat-error *ngIf="form.controls.recipientPhone.invalid && form.controls.recipientPhone.touched">
+                                <span *ngIf="form.controls.recipientPhone.hasError('required')">Phone is required</span>
+                            </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="mt-2 flex">
+                            <mat-form-field class="flex-auto gt-xs:pr-3"
+                            [class.mat-form-field-invalid]="form.controls.recipientCountry.invalid && form.controls.recipientCountry.touched">
+                            <mat-label class="block text-md font-medium text-gray-700">Country</mat-label>
+                            <mat-select formControlName="recipientCountry" appearance="standard">
+                                <mat-option *ngFor="let country of countries | keyvalue" [value]="country.key">{{country.value}}</mat-option>
+                            </mat-select>
+                            <mat-icon matPrefix [svgIcon]="'room'"></mat-icon>
+                        </mat-form-field>                 
+                        </div>
+                        <div class="mt-2 flex">
+                            <mat-form-field class="flex-auto gt-xs:pr-3"
+                            [class.mat-form-field-invalid]="form.controls.recipientAddress.invalid && form.controls.recipientAddress.touched">
+                            <mat-label class="block text-md font-medium text-gray-700">Address line 1</mat-label>
+                            <input formControlName="recipientAddress" type="text" matInput>
+                            <mat-icon matPrefix [svgIcon]="'landscape'"></mat-icon>
+                            <mat-error *ngIf="form.controls.recipientAddress.invalid && form.controls.recipientAddress.touched">
+                                <span *ngIf="form.controls.recipientAddress.hasError('required')">Address line 1 is required</span>
+                            </mat-error>
+                        </mat-form-field>                 
+                        </div>
+                        <div class="mt-2 flex">
+                            <mat-form-field class="flex-auto gt-xs:pr-3"
+                            [class.mat-form-field-invalid]="form.controls.recipientAddress2.invalid && form.controls.recipientAddress2.touched">
+                            <mat-label class="block text-md font-medium text-gray-700">Address line 2</mat-label>
+                            <input formControlName="recipientAddress2" type="text" matInput>
+                            <mat-icon matPrefix [svgIcon]="'landscape'"></mat-icon>
+                        </mat-form-field>                 
+                        </div>
+                        <div class="mt-2 flex flex-col gt-xs:flex-row">
+                            <mat-form-field class="flex-auto gt-xs:pr-3"
+                            [class.mat-form-field-invalid]="form.controls.recipientZip.invalid && form.controls.recipientZip.touched">
+                            <mat-label class="block text-md font-medium text-gray-700">Zip</mat-label>
+                            <input formControlName="recipientZip" type="text" matInput>
+                            <mat-icon matPrefix [svgIcon]="'email'"></mat-icon>
+                            </mat-form-field>
+                            <mat-form-field class="flex-auto gt-xs:pr-3"
+                            [class.mat-form-field-invalid]="form.controls.recipientCity.invalid && form.controls.recipientCity.touched">
+                            <mat-label class="block text-md font-medium text-gray-700">City</mat-label>
+                            <input formControlName="recipientCity" type="text" matInput>
+                            <mat-icon matPrefix [svgIcon]="'landscape'"></mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="mt-2 flex">
+                            <mat-form-field class="flex-auto gt-xs:pr-3"
+                            [class.mat-form-field-invalid]="form.controls.recipientVatNo.invalid && form.controls.recipientVatNo.touched">
+                            <mat-label class="block text-md font-medium text-gray-700">VAT number</mat-label>
+                            <input formControlName="recipientVatNo" type="text" matInput>
+                            <mat-icon matPrefix [svgIcon]="'looks_one'"></mat-icon>
+                        </mat-form-field>                 
+                        </div>
+                </div>
+                <div formArrayName="orderLines" class="flex flex-col mt-3 p-8 pb-5 bg-card rounded shadow overflow-hidden">
+                    <p class="text-lg font-semibold">Products</p>
+                    <p class="text-secondary">Choose products in the order or send shipment without products</p>
+                    <mat-divider class="mt-8 mb-8"></mat-divider>
+                    <ng-container *ngFor="let orderLine of form.get('orderLines')['controls']; let idx = index;">
+                        <div [formGroupName]="idx">
+                            <div class="flex">
+                                <mat-form-field class="flex-auto gt-xs:pr-3"
+                                [class.mat-form-field-invalid]="orderLine.controls.sku.invalid && orderLine.controls.sku.touched">
+                                <mat-label class="block text-md font-medium text-gray-700">SKU</mat-label>
+                                <input formControlName="sku" matInput [matAutocomplete]="auto">
+                                <mat-icon matPrefix [svgIcon]="'label'"></mat-icon>
+                                <mat-error
+                                    *ngIf="orderLine.controls.sku.invalid && orderLine.controls.sku.touched">
+                                    {{orderLine.controls.sku.errors?.empty?.message}}
+                                    {{orderLine.controls.sku.errors?.outOfStock?.message}}
+                                    {{orderLine.controls.sku.errors?.duplicate?.message}}
+                                </mat-error>
+                                <mat-hint class="text-red-500" *ngIf="checkOnHoldStatus(idx)">Out of stock</mat-hint>
+                                <mat-autocomplete #auto="matAutocomplete" class="flex-auto gt-xs:pr-3">
+                                    <mat-option
+                                        *ngFor="let option of (filteredOptions.get(idx) | async)"
+                                        [value]="option.sku">
+                                        {{option.sku}}
+                                        <mat-divider></mat-divider>
+                                    </mat-option>
+                                </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <div class="flex mt-2">
+                                <mat-form-field class="flex-auto gt-xs:pr-3"
+                                [class.mat-form-field-invalid]="orderLine.controls.description.invalid && orderLine.controls.description.touched">
+                                <mat-label class="block text-md font-medium text-gray-700">Name</mat-label>
+                                <input formControlName="description" type="text" matInput>
+                                <mat-icon matPrefix [svgIcon]="'description'"></mat-icon>
+                                <mat-error
+                                    *ngIf="orderLine.controls.description.invalid && orderLine.controls.description.touched">
+                                    Required
+                                </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="mt-2 flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3"
+                                [class.mat-form-field-invalid]="orderLine.controls.quantity.invalid && orderLine.controls.quantity.touched">
+                                <mat-label class="block text-md font-medium text-gray-700">Quantity</mat-label>
+                                <input formControlName="quantity" type="number" matInput>
+                                <mat-icon matPrefix svgIcon="add_shopping_cart"></mat-icon>
+                                <mat-error
+                                    *ngIf="orderLine.controls.quantity.invalid && orderLine.controls.quantity.touched">
+                                    <span *ngIf="orderLine.controls.quantity.hasError('required')">Required</span>
+                                    <span *ngIf="orderLine.controls.quantity.hasError('pattern')">Incorrect value</span>
+                                </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="flex-auto gt-xs:pr-3"
+                                        [class.mat-form-field-invalid]="orderLine.controls.weight.invalid && orderLine.controls.weight.touched">
+                                        <mat-label class="block text-md font-medium text-gray-700">Weight</mat-label>
+                                        <input formControlName="weight" type="number" matInput>
+                                        <mat-icon matPrefix svgIcon="linear_scale"></mat-icon>
+                                        <mat-select formControlName="weightUnit" matSuffix>
+                                            <mat-option *ngFor="let unit of measures" [value]="unit">{{unit}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                            </div>
+                            <div *ngIf="orderLine.controls.fullyVisible.value" class="mt-2 flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3"
+                                [class.mat-form-field-invalid]="orderLine.controls.unitPrice.invalid && orderLine.controls.unitPrice.touched">
+                                <mat-label class="block text-md font-medium text-gray-700">Unit price</mat-label>
+                                <input formControlName="unitPrice" type="number" matInput>
+                                <mat-icon matPrefix svgIcon="money"></mat-icon>
+                                <mat-error
+                                    *ngIf="orderLine.controls.unitPrice.invalid && orderLine.controls.unitPrice.touched">
+                                    <span *ngIf="orderLine.controls.quantity.hasError('required')">Required</span>
+                                    <span *ngIf="orderLine.controls.quantity.hasError('pattern')">Incorrect value</span>
+                                </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="flex-auto gt-xs:pr-3"
+                                        [class.mat-form-field-invalid]="orderLine.controls.discountedUnitPrice.invalid && orderLine.controls.discountedUnitPrice.touched">
+                                        <mat-label class="block text-md font-medium text-gray-700">Discounted unit price</mat-label>
+                                        <input formControlName="discountedUnitPrice" type="number" matInput>
+                                        <mat-icon matPrefix svgIcon="money"></mat-icon>
+                                    </mat-form-field>
+                            </div>
+                            <div *ngIf="orderLine.controls.fullyVisible.value" class="mt-2 flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3"
+                                [class.mat-form-field-invalid]="orderLine.controls.hsTariff.invalid && orderLine.controls.hsTariff.touched">
+                                <mat-label class="block text-md font-medium text-gray-700">Hs tariff code</mat-label>
+                                <input formControlName="hsTariff" type="text" matInput>
+                                <mat-icon matPrefix svgIcon="text_fields"></mat-icon>
+                                </mat-form-field>
+                                <mat-form-field class="flex-auto gt-xs:pr-3"
+                                        [class.mat-form-field-invalid]="orderLine.controls.vatRate.invalid && orderLine.controls.vatRate.touched">
+                                        <mat-label class="block text-md font-medium text-gray-700">VAT rate</mat-label>
+                                        <input min="0" max="100" formControlName="vatRate" type="number" matInput>
+                                        <mat-icon matPrefix svgIcon="corporate_fare"></mat-icon>
+                                        <span matSuffix>%</span>
+                                </mat-form-field>
+                            </div>
+                            <div *ngIf="orderLine.controls.fullyVisible.value" class="mt-2 flex flex-col gt-xs:flex-row">
+                                <mat-form-field class="flex-auto gt-xs:pr-3"
+                                [class.mat-form-field-invalid]="orderLine.controls.location.invalid && orderLine.controls.location.touched">
+                                <mat-label class="block text-md font-medium text-gray-700">Location</mat-label>
+                                <input formControlName="location" type="text" matInput>
+                                <mat-icon matPrefix svgIcon="my_location"></mat-icon>
+                                
+                                </mat-form-field>
+                                <mat-form-field class="flex-auto gt-xs:pr-3"
+                                        [class.mat-form-field-invalid]="orderLine.controls.country.invalid && orderLine.controls.country.touched">
+                                        <mat-label class="block text-md font-medium text-gray-700">Country</mat-label>
+                                        <mat-select formControlName="country">
+                                            <mat-option *ngFor="let country of countries| keyvalue" [value]="country.key">
+                                                {{country.value}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-icon matPrefix [svgIcon]="'room'"></mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <div class="text-center text-primary gt-xs:pr-3" (click)="orderLine.get('fullyVisible').setValue(! orderLine.get('fullyVisible').value)">
+                                <span class="cursor-pointer" *ngIf="!orderLine.controls.fullyVisible.value">
+                                    Advanced settings
+                                </span>
+                                <span class="cursor-pointer" *ngIf="orderLine.controls.fullyVisible.value">
+                                    Hide
+                                </span>
+                            </div>
+                            <div class="mt-2 flex gt-xs:pr-3">
+                                    <button mat-stroked-button (click)="deleteOrderLine(idx)" color="warn">
+                                        <mat-icon [svgIcon]="'delete'"></mat-icon>
+                                        Delete
+                                    </button>
+                            </div>
+                            <mat-divider  *ngIf="idx < form.get('orderLines')['controls'].length - 1" class="my-5"></mat-divider>
+                        </div>
+                    </ng-container>
+                    <div class="flex justify-center mt-5 gt-xs:pr-3">
+                        <button mat-stroked-button (click)="addOrderLine()" color="primary">
+                            <mat-icon [svgIcon]="'add'">Add</mat-icon>
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div class="flex flex-col mt-3 p-8 pb-5 bg-card rounded shadow overflow-hidden">
+                    <p class="text-lg font-semibold">Shipping</p>
+                    <p class="text-secondary">Information in relation to the shipment.</p>
+                    <mat-divider class="mt-8 mb-8"></mat-divider>
+                    <div class="flex gt-xs:pr-3">
+                        <mat-radio-group formControlName="shipment" *ngIf="(shipments | async)?.length > 0; else noShipment"
+                            class="flex flex-col">
+                            <mat-radio-button class="my-3 py-2 pl-4 pr-2 shadow" *ngFor="let shipment of shipments | async"
+                                [value]="shipment">
+                                {{shipment.shipping_name}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                        <ng-template #noShipment>
+                            <div class="flex flex-col">
+                                <div class="text-center m-8">
+                                    <mat-icon class="scale-4x">local_shipping</mat-icon>
+                                </div>
+                                <div class="text-center text-gray-500">No shipping rates could be matched to the
+                                    order</div>
+                                <div class="text-center text-gray-500 mt-2">Please fill in all of the required
+                                    fields</div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="flex flex-col mt-3 p-8 pb-5 bg-card rounded shadow overflow-hidden">
+                    <p class="text-lg font-semibold">Send automatically</p>
+                    <p class="text-secondary">Send the order from own stock.</p>
+                    <mat-divider class="mt-8 mb-8"></mat-divider>
+                    <div class="flex gt-xs:pr-3">
+                        <mat-checkbox formControlName="sendAutomatically" class="mr-2 block text-md font-medium text-gray-700">Send
+                            automatically</mat-checkbox>
+                    </div>
+                </div>
+                <div class="flex flex-col mt-3 p-8 pb-5 bg-card rounded shadow overflow-hidden">
+                    <p class="text-lg font-semibold">Comment</p>
+                    <p class="text-secondary">You comment about the order.</p>
+                    <mat-divider class="mt-8 mb-8"></mat-divider>
+                    <div class="flex flex-col">
+                        <mat-form-field class="flex-auto gt-xs:pr-3">
+                            <mat-label class="block text-md font-medium text-gray-700">External comment</mat-label>
+                            <textarea formControlName="externalComment" type="text" matInput></textarea>
+                        </mat-form-field>
+                        <mat-form-field class="flex-auto gt-xs:pr-3">
+                            <mat-label class="block text-md font-medium text-gray-700">Internal comment</mat-label>
+                            <textarea formControlName="internalComment" type="text" matInput></textarea>
+                        </mat-form-field>
+                        <div class="mt-2 flex-auto gt-xs:pr-3">
+                            <mat-checkbox  (change)="showPriorityToast($event)" formControlName="prioritiseOrder" class="mr-2 block text-md font-medium text-gray-700">Prioritise my order
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end mt-10">
+                    <button mat-button (click)="ngOnInit()">Cancel</button>
+                    <button class="px-6 ml-3" (click)="onSubmit()" mat-flat-button [color]="'primary'">
+                    <mat-progress-spinner class="mr-2" *ngIf="isSaving"
+                        [diameter]="18"
+                        [mode]="'indeterminate'">
+                    </mat-progress-spinner>
+                    <span>Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

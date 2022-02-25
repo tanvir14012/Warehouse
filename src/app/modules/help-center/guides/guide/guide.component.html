@@ -1,0 +1,52 @@
+<div class="content-layout fullwidth-basic-normal-scroll">
+
+    <!-- Header -->
+    <div class="header">
+
+        <a mat-button
+           [routerLink]="['../']"
+           [color]="'primary'">
+            <mat-icon [svgIcon]="'arrow_back'"></mat-icon>
+            <span>Back to {{guideCategory.title}}</span>
+        </a>
+        <h1>{{guideCategory.guides[0].title}}</h1>
+        <div class="subtitle">{{guideCategory.guides[0].subtitle}}</div>
+
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <div class="guide rich-text"
+             [innerHTML]="guideCategory.guides[0].content"></div>
+
+        <div class="footer">
+            <div class="info">
+                Last updated 2 months ago
+            </div>
+            <div class="reaction">
+                <div class="title">WAS THIS PAGE HELPFUL?</div>
+                <div class="reactions">
+                    <button mat-icon-button>
+                        <mat-icon [svgIcon]="'thumb_up'"></mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon [svgIcon]="'thumb_down'"></mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Next -->
+    <a class="next"
+       [routerLink]="'.'">
+        <div class="info">
+            <div class="title">Next</div>
+            <div class="guide-title">Removing a media from a project</div>
+        </div>
+        <mat-icon [svgIcon]="'arrow_forward'"></mat-icon>
+    </a>
+
+</div>

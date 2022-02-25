@@ -1,0 +1,347 @@
+<div [ngClass]="{'edit-mode': editMode}">
+
+    <!-- Actions -->
+    <div class="actions">
+
+        <!-- Edit button -->
+        <button mat-icon-button *ngIf="!editMode" [matMenuTriggerFor]="actionsMenu">
+            <mat-icon [svgIcon]="'more_vert'"></mat-icon>
+        </button>
+        <mat-menu #actionsMenu="matMenu">
+            <button mat-menu-item *ngIf="!editMode" (click)="enableEditMode()">
+                <mat-icon [svgIcon]="'edit'"></mat-icon>
+                <span>Edit order</span>
+            </button>
+        </mat-menu>
+
+        <!-- Cancel button -->
+        <button class="cancel-button" mat-icon-button *ngIf="editMode" [matTooltip]="'Cancel'"
+            (click)="editMode = !editMode">
+            <mat-icon [svgIcon]="'cancel'"></mat-icon>
+        </button>
+
+        <!-- Save button -->
+        <button mat-icon-button *ngIf="editMode" [disabled]="!haveChanges() || formData.invalid" [matTooltip]="'Save'"
+            (click)="openEditConfirmDialog()">
+            <mat-icon [svgIcon]="'save'"></mat-icon>
+        </button>
+
+        <!-- Delete button
+        <button mat-icon-button *ngIf="editMode" [matTooltip]="'Delete'" (click)="trackByFn(1, 2)">
+            <mat-icon [svgIcon]="'delete'"></mat-icon>
+        </button> -->
+
+        <!-- Close button -->
+        <button mat-icon-button *ngIf="!editMode" [matTooltip]="'Close'" [routerLink]="['../']">
+            <mat-icon [svgIcon]="'close'"></mat-icon>
+        </button>
+
+    </div>
+    <div class="tabs">
+        <mat-tab-group (selectedTabChange)="onTabChanged($event);" #tabs>
+            <mat-tab label="Order details">
+                <div class="order-details">
+                    <mat-card>
+                        <mat-card-header>
+                            <mat-card-title>Order {{order?.visible_ref}}</mat-card-title>
+                            <mat-card-subtitle>
+                                <mat-chip-list>
+                                    <mat-chip>{{order?.billing_address?.att_contact}}</mat-chip>
+                                </mat-chip-list>
+                            </mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <mat-list [formGroup]="formGroup">
+                                <ng-container *ngIf="!editMode">
+                                    <table [dataSource]="tableData" *ngIf="tableData.data.length > 0" mat-table
+                                        class="mat-elevation-z8 table-w-full">
+                                        <ng-container matColumnDef="quantity">
+                                            <th mat-header-cell *matHeaderCellDef>Qt&nbsp;&nbsp;</th>
+                                            <td class="v-align-top ptb-20 pr-5" mat-cell *matCellDef="let product">
+                                                {{product.quantity}}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="description">
+                                            <th mat-header-cell *matHeaderCellDef>Description</th>
+                                            <td mat-cell *matCellDef="let product" class="ptb-20">
+                                                <div class="text-bold">
+                                                    {{product.description}}
+                                                </div>
+                                                <div class="mtb-8">Sku: {{product.sku}}</div>
+                                                <div>
+                                                    <span
+                                                        class="inline-flex items-center font-bold text-xs px-2 py-2px rounded-full tracking-wide uppercase"
+                                                        [ngClass]="{'red-200': product.on_stock === false,
+                                                    'green-200': product.on_stock === true}">
+                                                        <span class="w-2 h-2 rounded-full mr-2" [ngClass]="{'bg-red': product.on_stock === false,
+                                                    'bg-green': product.on_stock === true}"></span>
+                                                        <span
+                                                            class="pr-2px leading-relaxed whitespace-no-wrap">{{product.on_stock
+                                                            ? 'on stock': 'out of stock'}}</span>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
+                                    </table>
+                                </ng-container>
+                                <ng-container *ngIf="editMode">
+                                    <div class="form-error-status" matLine
+                                        *ngIf="formGroup.invalid && (formGroup.dirty || formGroup.touched) && lastFieldUntouched()">
+                                        <mat-error>Please make sure that all fields are correct</mat-error>
+                                    </div>
+                                    <mat-list-item *ngFor="let product of formData.controls; let idx = index;">
+                                        <div matLine class="text-bold"
+                                            *ngFor="let chunk of getDescChunks(product?.controls.sku.value, 40)">
+                                            {{chunk}}
+                                        </div>
+                                        <div matLine formArrayName="data">
+                                            <div matLine></div>
+                                            <div class="d-flex-between" [formGroupName]="idx">
+                                                <mat-form-field appearance="fill" class="mr-5 mw-190">
+                                                    <mat-label>Sku</mat-label>
+                                                    <input matInput formControlName="sku" [matAutocomplete]="auto">
+                                                    <mat-autocomplete #auto="matAutocomplete">
+                                                        <mat-option matTooltip="{{option.description}}"
+                                                            *ngFor="let option of (filteredOptions.get(idx) | async)"
+                                                            [value]="option.sku">
+                                                            {{option.sku}}
+                                                            <mat-divider></mat-divider>
+                                                        </mat-option>
+                                                    </mat-autocomplete>
+                                                    <mat-hint *ngIf="product?.controls.sku.disabled">
+                                                        <span *ngIf="!isSkuInOptions(product?.controls.sku.value)" class="c-red">Out of stock</span>
+                                                        <span *ngIf="isSkuInOptions(product?.controls.sku.value)" class="c-green">On stock</span>
+                                                     </mat-hint>
+                                                    <mat-hint  *ngIf="product?.controls.sku.valid">
+                                                       <span class="c-green">On stock</span>
+                                                    </mat-hint>
+                                                    <!-- <mat-hint  *ngIf="product?.controls.sku.valid || product?.controls.sku.disabled">
+                                                        <span style="color: green;">On stock</span>
+                                                     </mat-hint> -->
+                                                    <mat-hint *ngIf="product?.controls.sku.disabled === false && product?.controls.sku.pristine">
+                                                        set product sku
+                                                    </mat-hint>
+                                                    <mat-error *ngIf="product.controls.sku.invalid">
+                                                        {{product.controls.sku.errors?.empty?.message}}
+                                                        {{product.controls.sku.errors?.outOfStock?.message}}
+                                                        {{product.controls.sku.errors?.duplicate?.message}}
+                                                    </mat-error>
+                                                </mat-form-field>
+                                                <mat-form-field appearance="fill" class="mw-30">
+                                                    <mat-label>Quantity</mat-label>
+                                                    <input type="number" matInput formControlName="quantity">
+                                                    <mat-hint *ngIf="product.controls.quantity.pristine">change quantity</mat-hint>
+                                                    <mat-error *ngIf="product.controls.quantity.invalid">
+                                                        incorrect value
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <button class="delete-btn" mat-icon-button color="warn"
+                                                    [matTooltip]="'Delete the product'" (click)="deleteFormData(idx)">
+                                                    <mat-icon [svgIcon]="'delete'"></mat-icon>
+                                                </button>
+                                            </div>
+                                            <div matLine></div>
+                                            <div matLine></div>
+                                            <mat-divider></mat-divider>
+                                        </div>
+                                    </mat-list-item>
+                                </ng-container>
+                                <mat-list-item class="plus-btn" matLine *ngIf="editMode">
+                                    <button mat-mini-fab color="accent" [matTooltip]="'Add a product'"
+                                        (click)="addForm()">
+                                        <mat-icon [svgIcon]="'add'"></mat-icon>
+                                    </button>
+                                </mat-list-item>
+                            </mat-list>
+                            <mat-list>
+                                <mat-list-item>
+                                    <mat-icon mat-list-icon>comment</mat-icon>
+                                    <div matLine *ngFor="let chunk of getChunks(order?.external_comment, 40)">{{chunk}}
+                                    </div>
+                                </mat-list-item>
+                                <mat-divider></mat-divider>
+                            </mat-list>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </mat-tab>
+            <mat-tab label="Customer info">
+                <!-- Customer Info Tab -->
+                <!-- Avatar and Name -->
+                <div *ngIf="order?.visible_ref !== 'Not Found !'" class="customer_info">
+                    <div class="avatar-and-name">
+
+                        <div class="avatar">
+
+                            <img *ngIf="order?.avatar" [src]="order?.avatar" #avatar>
+
+                            <div class="no-avatar" *ngIf="!order?.avatar">
+                                {{order?.billing_address?.att_contact.charAt(0)}}
+                            </div>
+
+                        </div>
+
+                        <!-- View Name-->
+                        <div class="view" *ngIf="order?.billing_address?.att_contact">
+                            <div class="name">{{order?.billing_address.att_contact}}</div>
+                        </div>
+                    </div>
+
+                    <!-- View City, Zip-->
+                    <div class="city" *ngIf="order?.billing_address?.city">
+
+                        <mat-icon class="icon" [svgIcon]="'location_city'"></mat-icon>
+
+                        <!-- View -->
+                        <div class="view">
+                            <div class="title" *ngIf="order?.billing_address?.city">
+                                {{order.billing_address?.city}}
+                                <ng-container *ngIf="order?.billing_address?.zip">,&nbsp;</ng-container>
+                            </div>
+                            <div class="zip" *ngIf="order?.billing_address?.zip">
+                                {{order.billing_address?.zip}}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Email -->
+                    <div class="emails" *ngIf="order?.billing_address?.email">
+
+                        <mat-icon class="icon" [svgIcon]="'email'"></mat-icon>
+
+                        <!-- View -->
+                        <div class="view">
+                            <div class="email">
+                                <div>
+                                    <a class="link" [href]="'mailto:' + order?.billing_address?.email">
+                                        {{order?.billing_address?.email}}
+                                    </a>
+                                </div>
+                                <div class="label">
+                                    <span class="separator">&bull;</span>
+                                    <span>Email</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- Phone numbers -->
+                    <div class="phone-numbers" *ngIf="order?.billing_address?.phone">
+
+                        <mat-icon class="icon" [svgIcon]="'phone'"></mat-icon>
+
+                        <!-- View -->
+                        <div class="view">
+
+                            <div class="phone-number">
+                                <div class="number" *ngIf="order?.billing_address.phone">
+                                    {{order.billing_address.phone | slice:0:2}} {{order.billing_address.phone |
+                                    slice:2:5}} {{order.billing_address.phone | slice:5:8}}
+                                    {{order.billing_address.phone | slice:8:15}}
+                                </div>
+                                <div class="label">
+                                    <span class="separator">&bull;</span>
+                                    <span>Phone</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="address" *ngIf="order?.billing_address">
+
+                        <mat-icon *ngIf="order.billing_address?.address_1 || order?.billing_address?.address_2 || 
+                            order.billing_address?.country_code || order.billing_address?.state || 
+                            order.billing_address?.zip" class="icon" [svgIcon]="'room'"></mat-icon>
+
+                        <!-- View -->
+                        <div class="view" *ngIf="order?.billing_address">
+                            {{order.billing_address?.address_1}} {{order.billing_address?.address_2}}
+                            {{order.billing_address?.state}} {{order.billing_address?.zip ? "PO-" + order.billing_address?.zip : ""}}
+                            {{order.billing_address?.country_code}}
+                        </div>
+                    </div>
+
+                    <!-- Created at -->
+                    <div class="created-at" *ngIf="order?.billing_address?.created_at">
+
+                        <mat-icon class="icon" [svgIcon]="'date_range'"></mat-icon>
+
+                        <!-- View -->
+                        <div class="view">
+                            {{order.billing_address.created_at | date:'longDate'}}
+                        </div>
+
+
+                    </div>
+                    <!-- Notes -->
+                    <div class="notes" *ngIf="order?.external_comment">
+
+                        <mat-icon class="icon" [svgIcon]="'notes'"></mat-icon>
+
+                        <!-- View -->
+                        <div class="view">
+                            <div [innerHTML]="order?.external_comment"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- Customer Info Tab -->
+            </mat-tab>
+            <mat-tab label="Order history">
+                <div class="order-timeline">
+                    <table class="wd-100">
+                        <thead>
+                            <tr>
+                                <td class="wd-15"></td>
+                                <td class="wd-85"></td>
+                            </tr>
+                        </thead>
+                        <ng-container *ngFor="let history of orderHistories; let idx = index;">
+                            <tr>
+                                <td class="vertical-align-center">
+                                    <div class="avatar">
+    
+                                        <img *ngIf="history.photoUrl" [src]="history.photoUrl" #avatar>
+            
+                                        <div class="no-avatar" *ngIf="!history.photoUrl">
+                                            {{history?.displayName?.charAt(0)}}
+                                        </div>
+            
+                                    </div>
+                                </td>
+                                <td class="vertical-align-center flex-dir-col">
+                                    <div>
+                                        <span class="bold-text">{{history.event}}</span>
+                                        <span matTooltip="{{history?.datetime.toString() | date:'MMMM d, y, HH:mm:ss z'}}" 
+                                        [matTooltipPosition]="'above'"
+                                        class="muted-text margin-l-5"> {{history?.datetime.toString() | date:'MMM d, HH:mm'}}</span>
+                                    </div>
+                                    <div>
+                                        <span>By:&nbsp;</span>
+                                        <span>{{history.displayName}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="idx < orderHistories.length - 1">
+                                <td class="padding-tb-5">
+                                    <div class="vertical-line">
+                                        <div class="line"></div>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </ng-container>
+                    </table>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

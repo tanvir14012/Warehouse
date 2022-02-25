@@ -1,0 +1,538 @@
+@import 'treo';
+
+inventory-list {
+    display: flex;
+    flex: 1 1 auto;
+
+    .main {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 0 !important;
+        min-height: 100%;
+
+        .header {
+            position: relative;
+            display: flex;
+            flex: 0 0 auto;
+            align-items: center;
+            padding: 40px 32px;
+            border-bottom-width: 1px;
+
+            @include treo-breakpoint('xs') {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .title {
+                margin-right: 32px;
+
+                @include treo-breakpoint('xs') {
+                    margin-right: 0;
+                }
+
+                h1 {
+                    margin: 0;
+                    line-height: 1;
+                }
+            }
+
+            .main-actions {
+                display: flex;
+                align-items: center;
+                margin-left: auto;
+
+                @include treo-breakpoint('xs') {
+                    margin-top: 32px;
+                    margin-left: 0;
+                    width: 100%;
+                }
+
+                .search {
+                    flex: 1 1 auto;
+                    margin-right: 16px;
+                    min-width: 200px;
+                    width: 100%;
+
+                    @include treo-breakpoint('xs') {
+                        min-width: 0;
+                    }
+
+                    .mat-form-field {
+                        width: 100%;
+                    }
+                }
+
+                .add-product {
+                    flex: 1 0 auto;
+                    padding: 0 20px 0 16px;
+
+                    .mat-icon {
+                        margin-right: 8px;
+                        @include treo-icon-size(20);
+                    }
+                }
+            }
+
+            .loader {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+        }
+
+        .products-list {
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            margin-bottom: 72px;
+            overflow: hidden;
+
+            @include treo-breakpoint('xs') {
+                display: block;
+                overflow: visible;
+                margin-bottom: 0;
+            }
+
+            .table-wrapper {
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+
+                @include treo-breakpoint('xs') {
+                    overflow: visible;
+                    overflow-x: auto;
+                }
+
+                table {
+                    width: 100%;
+                    min-width: 1200px;
+                    table-layout: fixed;
+
+                    &.loading {
+                        pointer-events: none;
+                    }
+
+                    thead {
+
+                        th {
+
+                            &.mat-column-sku {
+                                width: 300px;
+                                padding-left: 104px;
+                            }
+
+                            &.mat-column-unit_price {
+                                width: 160px;
+                            }
+
+                            &.mat-column-on_hand {
+                                width: 96px;
+                            }
+
+                            &.mat-column-active {
+                                width: 96px;
+                            }
+
+                            &.mat-column-details {
+                                width: 96px;
+                                padding-right: 32px;
+                            }
+                        }
+                    }
+
+                    tbody {
+
+                        tr.product-row {
+                            height: 72px;
+
+                            &:last-child {
+
+                                td {
+                                    border-bottom-width: 0;
+                                }
+                            }
+
+                            td {
+                                line-height: 1;
+                                border-bottom-width: 1px;
+
+                                &.mat-column-sku {
+                                    padding-left: 32px;
+                                    padding-right: 32px;
+
+                                    .sku-content {
+                                        display: flex;
+                                        align-items: center;
+
+                                        .thumbnail {
+                                            position: relative;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            width: 48px;
+                                            min-width: 48px;
+                                            height: 48px;
+                                            min-height: 48px;
+                                            margin-right: 24px;
+                                            overflow: hidden;
+                                            border-width: 1px;
+                                            border-radius: 8px;
+
+                                            > img {
+                                                width: 30px;
+                                            }
+
+                                            > span {
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                width: 100%;
+                                                height: 100%;
+                                                font-size: 10px;
+                                                font-weight: 600;
+                                                line-height: normal;
+                                                text-align: center;
+                                                text-transform: uppercase;
+                                            }
+                                        }
+
+                                        .sku {
+                                            overflow: hidden;
+                                            white-space: nowrap;
+                                            text-overflow: ellipsis;
+                                            line-height: normal;
+                                        }
+                                    }
+                                }
+
+                                &.mat-column-name {
+                                    padding-right: 32px;
+                                    overflow: hidden;
+                                    white-space: nowrap;
+                                    text-overflow: ellipsis;
+                                }
+
+                                &.mat-column-unit_price {
+                                    padding-right: 16px;
+                                }
+
+                                &.mat-column-on_hand {
+                                    padding-right: 16px;
+                                }
+
+                                &.mat-column-active {
+                                    padding-right: 16px;
+                                }
+
+                                &.mat-column-details {
+                                    padding-right: 32px;
+
+                                    .mat-stroked-button {
+                                        min-width: 40px;
+                                        min-height: 28px;
+                                        height: 28px;
+                                        padding: 0 8px;
+                                        line-height: 24px !important;
+
+                                        .mat-icon {
+                                            @include treo-icon-size(20);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        tr.product-details-row {
+                            height: 0;
+
+                            td {
+
+                                &.mat-column-productDetails {
+                                    padding: 0;
+                                    border-bottom-width: 0;
+
+                                    .product-details-container {
+                                        overflow: hidden;
+                                        @include treo-elevation('lg');
+
+                                        .product-details {
+                                            display: flex;
+                                            border-bottom-width: 1px;
+
+                                            .tags {
+                                                margin-top: 3px;
+                                                border-radius: 6px;
+                                                border-width: 1px;
+                                                @include treo-elevation('sm');
+
+                                                .tags-header {
+                                                    display: flex;
+                                                    align-items: center;
+                                                    margin: 9px 12px;
+
+                                                    .new-tag {
+                                                        display: flex;
+                                                        align-items: center;
+                                                        flex: 1 1 auto;
+                                                        min-width: 0;
+
+                                                        .mat-icon {
+                                                            @include treo-icon-size(16);
+                                                        }
+
+                                                        input {
+                                                            min-width: 0;
+                                                            margin: 0 0 0 8px;
+                                                            border: none;
+                                                            padding: 4px 0;
+                                                        }
+                                                    }
+
+                                                    .toggle-edit-mode {
+                                                        margin-left: 12px;
+                                                        width: 24px;
+                                                        height: 24px;
+                                                        min-height: 24px;
+
+                                                        .mat-icon {
+                                                            @include treo-icon-size(16);
+                                                        }
+                                                    }
+                                                }
+
+                                                .available-tags {
+                                                    max-height: 175px;
+                                                    overflow-y: auto;
+                                                    -webkit-overflow-scrolling: touch;
+                                                    line-height: 1;
+
+                                                    &:not(:empty) {
+                                                        padding: 8px 0;
+
+                                                        &.editing {
+                                                            padding: 16px 0;
+                                                        }
+                                                    }
+
+                                                    .mat-checkbox {
+                                                        display: flex;
+                                                        align-items: center;
+                                                        height: 40px;
+                                                        min-height: 40px;
+
+                                                        .mat-checkbox-layout {
+                                                            align-items: center;
+                                                            width: 100%;
+                                                            height: 100%;
+                                                            padding: 8px 16px;
+
+                                                            .mat-checkbox-inner-container {
+                                                                margin: 0 12px 0 0
+                                                            }
+                                                        }
+                                                    }
+
+                                                    .tag-edit {
+                                                        display: flex;
+                                                        align-items: center;
+                                                        margin-bottom: 16px;
+
+                                                        &:last-child {
+                                                            margin-bottom: 0;
+                                                        }
+
+                                                        .mat-icon-button {
+                                                            margin-left: 4px;
+
+                                                            .mat-icon {
+                                                                @include treo-icon-size(20);
+                                                            }
+                                                        }
+
+                                                        .mat-form-field {
+                                                            flex: 1 1 auto;
+                                                            min-width: 0;
+                                                            margin: 0 16px;
+                                                        }
+                                                    }
+                                                }
+
+                                                .create-tag {
+                                                    position: relative;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    padding: 16px 16px 16px 12px;
+                                                    cursor: pointer;
+                                                    line-height: 1;
+
+                                                    .mat-icon {
+                                                        margin-right: 8px;
+                                                        @include treo-icon-size(18);
+                                                    }
+
+                                                    div {
+                                                        width: 100%;
+                                                        word-break: break-all;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .mat-paginator {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                border-top-width: 1px;
+                border-bottom-width: 1px;
+                z-index: 10;
+
+                @include treo-breakpoint('xs') {
+                    position: relative;
+                    right: auto;
+                    bottom: auto;
+                    left: auto;
+                }
+
+                &.loading {
+                    pointer-events: none;
+                }
+
+                .mat-paginator-container {
+                    min-height: 72px;
+                }
+            }
+
+            .no-products {
+                padding: 64px;
+                font-size: 24px;
+                text-align: center;
+
+                @include treo-breakpoint('xs') {
+                    padding: 32px;
+                }
+            }
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------
+// @ Theming
+// -----------------------------------------------------------------------------------------------------
+@include treo-theme {
+
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+    $primary: map-get($theme, primary);
+    $is-dark: map-get($theme, is-dark);
+
+    inventory-list {
+
+        .main {
+
+            .products-list {
+
+                table {
+                    background: transparent;
+
+                    thead {
+
+                        th {
+                            box-shadow: 0 1px 0 0 map-get($foreground, divider);
+
+                            @if ($is-dark) {
+                                background: rgba(0, 0, 0, 0.05);
+                            } @else {
+                                background: treo-color('cool-gray', 50);
+                            }
+                        }
+                    }
+
+                    tbody {
+
+                        tr.product-row {
+
+                            &:hover {
+                                @if ($is-dark) {
+                                    background: rgba(0, 0, 0, 0.05);
+                                } @else {
+                                    background: map-get($primary, 50);
+                                }
+                            }
+
+                            td {
+
+                                &.mat-column-sku {
+
+                                    .thumbnail {
+                                        background: white;
+
+                                        > span {
+                                            color: treo-color('cool-gray', 500);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        tr.product-details-row {
+
+                            td {
+
+                                &.mat-column-productDetails {
+
+                                    .product-details-container {
+
+                                        .product-details {
+
+                                            .tags {
+                                                @if ($is-dark) {
+                                                    background-color: rgba(0, 0, 0, 0.05);
+                                                    border-color: treo-color('cool-gray', 500);
+                                                } @else {
+                                                    background-color: white;
+                                                    border-color: treo-color('cool-gray', 300);
+                                                }
+
+                                                .available-tags {
+                                                    box-shadow: 0 -1px 0 0 map-get($foreground, divider);
+
+                                                    .mat-checkbox {
+
+                                                        &:hover {
+                                                            background: map-get($background, hover);
+                                                        }
+                                                    }
+                                                }
+
+                                                .create-tag {
+                                                    background: map-get($background, hover);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .mat-paginator {
+                    @if ($is-dark) {
+                        background: rgba(0, 0, 0, 0.05);
+                    } @else {
+                        background: treo-color('cool-gray', 50);
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,42 @@
+<div class="content-layout fullwidth-basic-normal-scroll">
+
+    <!-- Header -->
+    <div class="header">
+
+        <button mat-button
+                [routerLink]="['../']"
+                [color]="'primary'">
+            <mat-icon [svgIcon]="'arrow_back'"></mat-icon>
+            <span>Back to Help Center</span>
+        </button>
+        <h1>Frequently Asked Questions</h1>
+
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <div class="faqs"
+             *ngFor="let faqCategory of faqCategories; trackBy: trackByFn">
+
+            <h3>{{faqCategory.title}}</h3>
+
+            <mat-accordion>
+
+                <mat-expansion-panel *ngFor="let faq of faqCategory.faqs; trackBy: trackByFn">
+
+                    <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                        <mat-panel-title>{{faq.question}}</mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    {{faq.answer}}
+
+                </mat-expansion-panel>
+
+            </mat-accordion>
+
+        </div>
+
+    </div>
+
+</div>

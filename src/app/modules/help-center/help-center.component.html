@@ -1,0 +1,68 @@
+<div class="content-layout fullwidth-basic-normal-scroll">
+  <!-- Background - Inline SVG for easy customizations -->
+  <svg class="background" viewBox="0 0 1531 891" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 182c144.327 47.973 534.462 219.712 440.509 369.87C346.555 702.028 79.877 662.846 0 638V182z"></path>
+    <path d="M1405 848c-424.366 158.009-437-164-437-272s102-425 563-576v769c-21.333 29.333-63.333 55.667-126 79z"></path>
+    <path
+      d="M1531 162c-122.914-17.284-377.96 33.191-543.433 206.414C822.095 541.636 797.342 648.75 835.842 731.622c38.5 82.871 198.243 134.841 400.555 92.053C1438.71 780.886 1492.752 775.894 1531 768V162z"
+    ></path>
+  </svg>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Header -->
+    <div class="header">
+      <h1>Welcome! How can we help you today?</h1>
+
+      <div class="search">
+        <mat-form-field class="treo-mat-no-subscript treo-mat-rounded">
+          <input matInput [placeholder]="'Enter a question, topic or keyword'" />
+          <mat-icon matPrefix [svgIcon]="'search'"></mat-icon>
+        </mat-form-field>
+      </div>
+
+      <h5>... or choose a category to quickly find the help you need</h5>
+
+      <div class="categories">
+        <a class="category" [routerLink]="['faqs']">
+          <mat-icon [svgIcon]="'heroicons_outline:document-text'"></mat-icon>
+          <div>
+            <div class="title">FAQs</div>
+            <div class="subtitle">Frequently asked questions and answers</div>
+          </div>
+        </a>
+
+        <a class="category" [routerLink]="['guides']">
+          <mat-icon [svgIcon]="'heroicons_outline:book-open'"></mat-icon>
+          <div>
+            <div class="title">Guides</div>
+            <div class="subtitle">Articles and resources to guide you</div>
+          </div>
+        </a>
+
+        <a class="category" [routerLink]="['support']">
+          <mat-icon [svgIcon]="'heroicons_outline:support'"></mat-icon>
+          <div>
+            <div class="title">Support</div>
+            <div class="subtitle">Contact us for more detailed support</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="faqs">
+      <h2>Most frequently asked questions</h2>
+      <h6>Here are the most frequently asked questions you may check before getting started</h6>
+
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let faq of faqCategory.faqs; trackBy: trackByFn">
+          <mat-expansion-panel-header [collapsedHeight]="'56px'">
+            <mat-panel-title>{{ faq.question }}</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          {{ faq.answer }}
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>
