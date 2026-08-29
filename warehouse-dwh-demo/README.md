@@ -268,8 +268,29 @@ Potential extensions for a stronger portfolio version:
 - Replace SQLite with Azure SQL or Synapse for cloud warehouse testing
 - Add Apache Spark notebooks for distributed processing
 - Add Kafka-based stream simulation for order events
-- Add CI/CD deployment automation with Azure DevOps
 - Add incremental load logic and data quality checks
+
+## Azure DevOps CI/CD pipeline
+
+This demo includes a pipeline definition at the repository root: `azure-pipelines.yml`.
+
+What it does:
+
+- triggers on `master` and `feature/*`
+- validates pull requests to `master`
+- installs Python 3.12
+- creates source CSV files
+- builds the SQLite warehouse and fact/dimension tables
+- verifies record counts and revenue totals
+- publishes the generated CSV artifacts for Power BI and downstream reporting
+
+Example local equivalent:
+
+```bash
+cd warehouse-dwh-demo
+python scripts/generate_demo_data.py
+python scripts/build_warehouse.py
+```
 
 ## Local run checklist
 
