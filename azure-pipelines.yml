@@ -1,0 +1,66 @@
+trigger:
+  branches:
+    include:
+      - master
+      - feature/*
+
+pr:
+  branches:
+    include:
+      - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  pythonVersion: '3.12'
+
+stages:
+  - stage: BuildAndValidate
+    displayName: Build and Validate Warehouse Demo
+    jobs:
+      - job: WarehouseDemoCI
+        displayName: Warehouse Data Pipeline Validation
+        steps:
+          - checkout: self
+
+          - task: UsePythonVersion@0
+            displayName: Use Python $(pythonVersion)
+            inputs:
+              versionSpec: '$(pythonVersion)'
+
+          - script: |
+              python -m pip install --upgrade pip
+            displayName: Upgrade pip
+
+          - script: |
+              cd warehouse-dwh-demo
+              python scripts/generate_demo_data.py
+              python scripts/build_warehouse.py
+              python -c "import sqlite3; conn = sqlite3.connect('data/warehouse/warehouse_demo.db'); print('customers=', conn.execute('SELECT COUNT(*) FROM dim_customer').fetchone()[0]); print('products=', conn.execute('SELECT COUNT(*) FROM dim_product').fetchone()[0]); print('warehouses=', conn.execute('SELECT COUNT(*) FROM dim_warehouse').fetchone()[0]); print('orders=', conn.execute('SELECT COUNT(*) FROM fact_order').fetchone()[0]); print('revenue=', conn.execute('SELECT ROUND(SUM(gross_revenue), 2) FROM fact_order').fetchone()[0]); conn.close()"
+            displayName: Generate data and validate warehouse model
+
+          - publish: warehouse-dwh-demo/data/published
+            artifact: warehouse-demo-published-data
+            displayName: Publish Power BI-ready CSV outputs
+
+  - stage: ReleasePackage
+    displayName: Release Demo Package
+    dependsOn: BuildAndValidate
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    jobs:
+      - job: PackageRelease
+        displayName: Create release artifact
+        steps:
+          - download: current
+            artifact: warehouse-demo-published-data
+
+          - script: |
+              mkdir -p $(Pipeline.Workspace)/warehouse-release
+              cp -R $(Pipeline.Workspace)/warehouse-demo-published-data/* $(Pipeline.Workspace)/warehouse-release/
+              echo "Prepared Azure DevOps release artifact for warehouse dashboard consumption."
+            displayName: Stage release package
+
+          - publish: $(Pipeline.Workspace)/warehouse-release
+            artifact: warehouse-demo-release
+            displayName: Publish release artifact

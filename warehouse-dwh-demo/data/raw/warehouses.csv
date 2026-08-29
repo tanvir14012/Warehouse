@@ -1,0 +1,9 @@
+warehouse_id,warehouse_code,warehouse_name,region,city,country,capacity
+1,WH-101,Seattle Hub,North,Seattle,USA,3200
+2,WH-102,Chicago Central,North,Chicago,USA,2800
+3,WH-103,Dallas West,South,Dallas,USA,2600
+4,WH-104,Atlanta South,South,Atlanta,USA,2400
+5,WH-105,New York East,East,New York,USA,3100
+6,WH-106,Boston Harbor,East,Boston,USA,2200
+7,WH-107,Los Angeles West,West,Los Angeles,USA,2900
+8,WH-108,Portland NW,West,Portland,USA,2000
