@@ -1,0 +1,5 @@
+# Minimal local dependencies for the data warehouse demo.
+# This demo is built using the Python standard library for portability.
+# Optional future additions:
+# pandas>=2.0
+# pyarrow>=14.0

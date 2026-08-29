@@ -1,25 +1,39 @@
-# Treo - Admin template and Starter project for Angular
+# Warehouse Modern Data Solution
 
-## Development server
+This repository now keeps the legacy application in the `legacy/` folder and hosts a modern warehouse analytics demo in `warehouse-dwh-demo/`.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Repository structure
 
-## Code scaffolding
+- `legacy/` — original Angular application retained for historical reference
+- `warehouse-dwh-demo/` — a data warehouse demo aligned to a senior DWH/BI role profile
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Demo overview
 
-## Build
+The `warehouse-dwh-demo` project demonstrates:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+- dimension and fact modeling
+- ETL pipeline design using Python
+- SQLite warehouse creation and curated summary tables
+- Power BI-ready reporting outputs
+- Azure-friendly architecture mapping
 
-## Running unit tests
+## Where to start
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Please read:
 
-## Running end-to-end tests
+- `warehouse-dwh-demo/README.md`
+- `warehouse-dwh-demo/dashboard/powerbi_dashboard_spec.md`
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Local run
 
-## Further help
+```bash
+cd warehouse-dwh-demo
+python scripts/generate_demo_data.py
+python scripts/build_warehouse.py
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+This builds the sample warehouse, creates summary CSVs, and prepares the project for Power BI import.
+
+## PR status
+
+This repository is prepared for a portfolio/demo pull request showing the migration from a legacy app to a modern warehouse analytics solution.

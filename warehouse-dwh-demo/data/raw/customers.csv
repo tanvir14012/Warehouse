@@ -1,0 +1,201 @@
+customer_id,customer_name,region,city,country,segment,signup_date
+1,Customer 1,North,Seattle,USA,Enterprise,2021-05-16
+2,Customer 2,South,Atlanta,USA,Retail,2023-10-17
+3,Customer 3,North,Minneapolis,USA,Wholesale,2020-03-06
+4,Customer 4,North,Seattle,USA,SMB,2021-04-21
+5,Customer 5,North,Minneapolis,USA,SMB,2023-08-23
+6,Customer 6,West,San Diego,USA,Wholesale,2023-04-21
+7,Customer 7,East,New York,USA,SMB,2023-11-30
+8,Customer 8,West,Los Angeles,USA,Enterprise,2020-11-14
+9,Customer 9,South,Dallas,USA,Retail,2020-07-08
+10,Customer 10,West,San Diego,USA,Enterprise,2021-12-05
+11,Customer 11,East,New York,USA,Wholesale,2023-01-03
+12,Customer 12,North,Chicago,USA,Retail,2023-02-04
+13,Customer 13,East,Philadelphia,USA,Enterprise,2023-03-28
+14,Customer 14,South,Miami,USA,Retail,2020-04-03
+15,Customer 15,South,Dallas,USA,Retail,2021-04-21
+16,Customer 16,North,Chicago,USA,Enterprise,2022-07-17
+17,Customer 17,East,New York,USA,Enterprise,2021-12-28
+18,Customer 18,South,Miami,USA,Enterprise,2023-12-08
+19,Customer 19,North,Minneapolis,USA,SMB,2022-12-29
+20,Customer 20,South,Atlanta,USA,Wholesale,2022-02-16
+21,Customer 21,East,Philadelphia,USA,SMB,2023-11-03
+22,Customer 22,East,New York,USA,SMB,2020-03-06
+23,Customer 23,East,Boston,USA,Enterprise,2020-05-15
+24,Customer 24,South,Miami,USA,Enterprise,2021-03-11
+25,Customer 25,West,Los Angeles,USA,Wholesale,2020-10-19
+26,Customer 26,East,New York,USA,SMB,2023-02-23
+27,Customer 27,East,Philadelphia,USA,Wholesale,2023-04-10
+28,Customer 28,West,Los Angeles,USA,SMB,2020-10-10
+29,Customer 29,West,San Diego,USA,Retail,2020-08-12
+30,Customer 30,South,Miami,USA,SMB,2023-10-25
+31,Customer 31,West,Portland,USA,Retail,2022-02-27
+32,Customer 32,West,Portland,USA,Wholesale,2022-12-19
+33,Customer 33,East,Philadelphia,USA,Retail,2023-10-25
+34,Customer 34,North,Minneapolis,USA,Enterprise,2023-08-05
+35,Customer 35,East,New York,USA,Enterprise,2022-06-09
+36,Customer 36,South,Dallas,USA,Retail,2021-06-23
+37,Customer 37,South,Miami,USA,Retail,2023-07-04
+38,Customer 38,East,Philadelphia,USA,SMB,2020-11-09
+39,Customer 39,East,New York,USA,Retail,2023-05-11
+40,Customer 40,East,Boston,USA,Retail,2020-08-17
+41,Customer 41,East,Boston,USA,SMB,2020-04-28
+42,Customer 42,South,Miami,USA,Retail,2020-06-24
+43,Customer 43,West,San Diego,USA,SMB,2020-09-19
+44,Customer 44,West,Portland,USA,SMB,2021-06-26
+45,Customer 45,West,San Diego,USA,SMB,2021-09-30
+46,Customer 46,West,Portland,USA,Enterprise,2022-06-16
+47,Customer 47,West,San Diego,USA,SMB,2021-04-05
+48,Customer 48,North,Chicago,USA,Retail,2023-04-19
+49,Customer 49,South,Miami,USA,SMB,2020-01-15
+50,Customer 50,North,Minneapolis,USA,Retail,2021-04-13
+51,Customer 51,North,Seattle,USA,Enterprise,2020-05-25
+52,Customer 52,South,Dallas,USA,Wholesale,2021-03-14
+53,Customer 53,South,Miami,USA,Wholesale,2021-05-12
+54,Customer 54,West,Los Angeles,USA,SMB,2020-07-12
+55,Customer 55,North,Minneapolis,USA,Wholesale,2021-12-26
+56,Customer 56,West,Los Angeles,USA,Wholesale,2020-04-20
+57,Customer 57,North,Seattle,USA,Wholesale,2021-11-25
+58,Customer 58,North,Seattle,USA,SMB,2021-01-24
+59,Customer 59,West,San Diego,USA,Wholesale,2021-01-10
+60,Customer 60,East,Boston,USA,SMB,2020-06-03
+61,Customer 61,West,Portland,USA,Retail,2020-04-13
+62,Customer 62,North,Seattle,USA,SMB,2020-12-06
+63,Customer 63,West,Los Angeles,USA,Wholesale,2021-03-13
+64,Customer 64,West,San Diego,USA,SMB,2022-02-15
+65,Customer 65,North,Chicago,USA,Enterprise,2022-07-20
+66,Customer 66,East,Boston,USA,Wholesale,2020-11-13
+67,Customer 67,South,Dallas,USA,SMB,2020-04-29
+68,Customer 68,North,Minneapolis,USA,Enterprise,2020-04-27
+69,Customer 69,North,Minneapolis,USA,Wholesale,2022-10-26
+70,Customer 70,South,Atlanta,USA,Retail,2021-01-15
+71,Customer 71,North,Minneapolis,USA,Retail,2023-10-14
+72,Customer 72,South,Dallas,USA,Retail,2023-03-12
+73,Customer 73,South,Miami,USA,Retail,2023-06-22
+74,Customer 74,North,Chicago,USA,Enterprise,2021-06-18
+75,Customer 75,South,Miami,USA,Enterprise,2021-05-03
+76,Customer 76,East,Boston,USA,SMB,2023-10-07
+77,Customer 77,East,Boston,USA,Enterprise,2020-05-28
+78,Customer 78,North,Chicago,USA,Retail,2020-05-30
+79,Customer 79,South,Miami,USA,Enterprise,2020-09-28
+80,Customer 80,East,New York,USA,SMB,2022-01-26
+81,Customer 81,East,New York,USA,Wholesale,2023-01-17
+82,Customer 82,East,Philadelphia,USA,Retail,2023-09-29
+83,Customer 83,East,Philadelphia,USA,Retail,2020-10-02
+84,Customer 84,East,New York,USA,Retail,2023-02-07
+85,Customer 85,South,Dallas,USA,Enterprise,2023-05-23
+86,Customer 86,South,Miami,USA,Enterprise,2021-02-20
+87,Customer 87,East,Philadelphia,USA,Wholesale,2021-05-29
+88,Customer 88,North,Seattle,USA,Wholesale,2021-07-20
+89,Customer 89,North,Seattle,USA,Enterprise,2020-09-24
+90,Customer 90,East,New York,USA,Wholesale,2023-02-03
+91,Customer 91,West,Portland,USA,Retail,2020-08-17
+92,Customer 92,North,Minneapolis,USA,SMB,2023-01-22
+93,Customer 93,North,Chicago,USA,SMB,2022-05-30
+94,Customer 94,South,Atlanta,USA,Enterprise,2022-01-16
+95,Customer 95,North,Chicago,USA,SMB,2023-10-28
+96,Customer 96,South,Miami,USA,Retail,2021-12-25
+97,Customer 97,West,Portland,USA,SMB,2021-04-29
+98,Customer 98,South,Atlanta,USA,Wholesale,2020-02-20
+99,Customer 99,South,Miami,USA,Enterprise,2022-04-23
+100,Customer 100,South,Dallas,USA,SMB,2023-12-07
+101,Customer 101,North,Chicago,USA,Retail,2022-08-21
+102,Customer 102,South,Atlanta,USA,Wholesale,2021-12-17
+103,Customer 103,East,New York,USA,SMB,2020-02-18
+104,Customer 104,South,Dallas,USA,Enterprise,2021-07-24
+105,Customer 105,North,Chicago,USA,Enterprise,2023-08-06
+106,Customer 106,West,Portland,USA,Enterprise,2020-02-26
+107,Customer 107,North,Chicago,USA,SMB,2023-04-04
+108,Customer 108,East,New York,USA,Retail,2023-05-06
+109,Customer 109,West,Los Angeles,USA,Enterprise,2022-06-12
+110,Customer 110,North,Chicago,USA,SMB,2021-06-05
+111,Customer 111,North,Minneapolis,USA,Wholesale,2020-01-04
+112,Customer 112,South,Dallas,USA,Wholesale,2020-05-23
+113,Customer 113,East,Philadelphia,USA,Enterprise,2023-09-20
+114,Customer 114,North,Minneapolis,USA,Enterprise,2022-11-04
+115,Customer 115,East,Philadelphia,USA,Wholesale,2021-10-30
+116,Customer 116,West,Portland,USA,Enterprise,2023-02-09
+117,Customer 117,South,Atlanta,USA,Wholesale,2023-09-23
+118,Customer 118,West,Portland,USA,SMB,2023-06-14
+119,Customer 119,East,Boston,USA,Retail,2021-09-14
+120,Customer 120,East,New York,USA,Wholesale,2023-04-02
+121,Customer 121,East,Boston,USA,Wholesale,2022-06-24
+122,Customer 122,South,Miami,USA,Wholesale,2020-12-13
+123,Customer 123,North,Chicago,USA,Enterprise,2020-07-10
+124,Customer 124,South,Miami,USA,Enterprise,2021-04-05
+125,Customer 125,South,Atlanta,USA,Retail,2020-04-04
+126,Customer 126,South,Dallas,USA,Retail,2022-07-21
+127,Customer 127,West,Portland,USA,SMB,2023-11-27
+128,Customer 128,West,Los Angeles,USA,Wholesale,2021-05-14
+129,Customer 129,South,Miami,USA,Retail,2020-08-06
+130,Customer 130,West,San Diego,USA,SMB,2023-11-26
+131,Customer 131,West,San Diego,USA,SMB,2020-09-05
+132,Customer 132,West,San Diego,USA,Wholesale,2023-09-29
+133,Customer 133,East,Boston,USA,Wholesale,2023-01-27
+134,Customer 134,West,San Diego,USA,Wholesale,2022-07-10
+135,Customer 135,East,New York,USA,Enterprise,2022-12-03
+136,Customer 136,West,Portland,USA,SMB,2021-07-16
+137,Customer 137,West,San Diego,USA,Enterprise,2021-04-25
+138,Customer 138,East,Boston,USA,Enterprise,2023-01-11
+139,Customer 139,North,Seattle,USA,SMB,2021-04-18
+140,Customer 140,West,Portland,USA,SMB,2023-12-17
+141,Customer 141,South,Atlanta,USA,Wholesale,2022-04-14
+142,Customer 142,East,Philadelphia,USA,Wholesale,2022-05-01
+143,Customer 143,North,Seattle,USA,Wholesale,2022-03-08
+144,Customer 144,North,Minneapolis,USA,Wholesale,2022-09-03
+145,Customer 145,North,Chicago,USA,Enterprise,2022-03-09
+146,Customer 146,West,Portland,USA,SMB,2022-09-26
+147,Customer 147,South,Dallas,USA,Wholesale,2022-09-21
+148,Customer 148,North,Chicago,USA,Enterprise,2023-10-01
+149,Customer 149,West,Portland,USA,SMB,2022-08-15
+150,Customer 150,South,Miami,USA,Retail,2022-03-17
+151,Customer 151,North,Seattle,USA,Wholesale,2020-10-04
+152,Customer 152,West,San Diego,USA,Retail,2021-06-16
+153,Customer 153,West,Los Angeles,USA,SMB,2022-07-20
+154,Customer 154,East,Boston,USA,Wholesale,2021-07-23
+155,Customer 155,West,Los Angeles,USA,Retail,2022-08-21
+156,Customer 156,North,Minneapolis,USA,Retail,2021-12-17
+157,Customer 157,South,Miami,USA,Retail,2023-08-27
+158,Customer 158,North,Seattle,USA,SMB,2021-02-12
+159,Customer 159,North,Minneapolis,USA,SMB,2021-05-03
+160,Customer 160,South,Dallas,USA,Retail,2023-03-01
+161,Customer 161,South,Dallas,USA,Enterprise,2022-01-25
+162,Customer 162,South,Miami,USA,Retail,2020-12-01
+163,Customer 163,East,New York,USA,Retail,2021-09-30
+164,Customer 164,West,Los Angeles,USA,SMB,2020-06-04
+165,Customer 165,South,Atlanta,USA,Enterprise,2023-11-02
+166,Customer 166,North,Minneapolis,USA,Retail,2021-12-12
+167,Customer 167,West,Portland,USA,Enterprise,2020-05-21
+168,Customer 168,East,New York,USA,Wholesale,2022-09-30
+169,Customer 169,North,Chicago,USA,Enterprise,2023-07-25
+170,Customer 170,West,Portland,USA,SMB,2022-06-10
+171,Customer 171,South,Miami,USA,Enterprise,2023-06-15
+172,Customer 172,West,Los Angeles,USA,Wholesale,2023-04-28
+173,Customer 173,East,Boston,USA,SMB,2020-06-26
+174,Customer 174,East,Boston,USA,SMB,2022-08-09
+175,Customer 175,West,Los Angeles,USA,Retail,2022-10-09
+176,Customer 176,East,New York,USA,Wholesale,2021-03-10
+177,Customer 177,East,Boston,USA,Enterprise,2021-07-26
+178,Customer 178,East,Philadelphia,USA,Retail,2022-11-24
+179,Customer 179,South,Atlanta,USA,SMB,2022-04-12
+180,Customer 180,West,Portland,USA,SMB,2023-11-15
+181,Customer 181,West,Portland,USA,Wholesale,2022-07-06
+182,Customer 182,North,Seattle,USA,Enterprise,2021-03-29
+183,Customer 183,West,Portland,USA,SMB,2021-09-19
+184,Customer 184,East,Boston,USA,Enterprise,2022-05-21
+185,Customer 185,East,Boston,USA,Wholesale,2021-07-08
+186,Customer 186,East,Boston,USA,SMB,2020-09-04
+187,Customer 187,South,Dallas,USA,Retail,2023-01-02
+188,Customer 188,South,Atlanta,USA,SMB,2022-09-18
+189,Customer 189,East,Philadelphia,USA,Enterprise,2020-07-24
+190,Customer 190,South,Dallas,USA,SMB,2022-01-09
+191,Customer 191,South,Dallas,USA,Retail,2023-12-21
+192,Customer 192,South,Dallas,USA,Retail,2020-04-21
+193,Customer 193,East,Philadelphia,USA,SMB,2023-07-30
+194,Customer 194,West,San Diego,USA,Retail,2023-03-21
+195,Customer 195,East,Boston,USA,Wholesale,2022-06-21
+196,Customer 196,East,New York,USA,Retail,2021-06-01
+197,Customer 197,West,San Diego,USA,Retail,2022-03-31
+198,Customer 198,West,San Diego,USA,Retail,2020-11-06
+199,Customer 199,South,Miami,USA,Enterprise,2020-06-23
+200,Customer 200,South,Atlanta,USA,Wholesale,2023-05-26

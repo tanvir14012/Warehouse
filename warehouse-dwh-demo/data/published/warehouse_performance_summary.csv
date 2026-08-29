@@ -1,0 +1,9 @@
+warehouse_name,region,total_orders,revenue,gross_margin,avg_order_value,on_time_pct
+Los Angeles West,West,546,1487820.34,472415.29,2724.95,85.9
+Chicago Central,North,499,1424687.36,458493.4,2855.08,84.57
+Portland NW,West,487,1406313.18,447330.95,2887.71,86.24
+New York East,East,490,1353845.95,433724.55,2762.95,85.92
+Boston Harbor,East,499,1272493.54,410744.78,2550.09,84.17
+Seattle Hub,North,501,1236197.57,400427.54,2467.46,85.03
+Dallas West,South,497,1234160.35,398895.0,2483.22,85.31
+Atlanta South,South,481,1193683.87,383892.56,2481.67,85.03
